@@ -1,0 +1,582 @@
+@extends('Layout.App')
+@section('title', $social->name . ' ' . $service->name)
+
+@section('content')
+<div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                  
+                    <div class="card-body">
+                        <ul class="nav nav-justified nav-light nav-tabs    mb-4">
+    <li class="nav-item">
+        <a class="nav-link active  rounded-pill" data-bs-toggle="tab" href="#tab_order">
+            <span class="nav-icon-wrap"><span class="feather-icon"><i class="fa fa-shopping-basket"></i></span></span>
+            <span class="nav-link-text">&nbsp;Đơn Hàng</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link  rounded-pill" data-bs-toggle="tab" href="#profile2">
+            <span class="nav-icon-wrap"><span class="feather-icon"><i class="fa fa-history"></i></span></span>
+            <span class="nav-link-text">&nbsp;Danh Sách Đơn</span>
+        </a>
+    </li>
+</ul>     
+                     <div class="tab-content">
+                            <div class="tab-pane fade show active" id="tab_order">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                    <form action="{{ route('api.service.order', ['social' => $social->slug, 'service' => $service->slug]) }}" method="POST" request="duymedia">
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label">Tên proxy:</label>
+                                                <div class="col-md-12">
+                                                    <input type="text" class="form-control mb-3" name="link_order"
+                                                        placeholder="Nhập tên proxy">
+                                                
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label">Loại:</label>
+                                                <div class="col-md-12">
+                                                    
+                                                <select name="server_service" id="server_service" onchange="bill()"  class="form-select mb-3">
+                                                @foreach ($server as $item)   
+                                                <option value="{{ $item->server }}">{{ $item->title }}</option>
+                                                    
+                                                    @endforeach
+                                                </select>
+                                               
+                        
+                                                </div>
+                                            </div>
+                                            <div class="mt-2">
+                                                    <div id="details"></div>
+                                                </div>
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label">Quốc gia:</label>
+                                                <div class="col-md-12">
+                                                    
+                                                <select class="form-select mb-3" data-search="on" name="country" id="">
+                                                    <option value="au">Autstralia (Úc)</option>
+                                                    <option value="ae">UAE (Các tiểu Vương quốc Ả Rập thống nhất)</option>
+                                                    <option value="ca">Canada</option>
+                                                    <option value="co">Colombia</option>
+                                                    <option value="de">Germany (Đức)</option>
+                                                    <option value="in">India (Ấn Độ)</option>
+                                                    <option value="sg">Singapore</option>
+                                                    <option value="nl">Netherlands (Hà Lan)</option>
+                                                    <option value="gb">United Kingdom (Vương quốc Anh)</option>
+                                                    <option value="fr">France (Pháp)</option>
+                                                    <option value="fi">Finland (Phần Lan)</option>
+                                                    <option value="ua">Ukraine</option>
+                                                    <option value="ru">Russia (Nga)</option>
+                                                    <option value="jp">Japan (Nhật Bản)</option>
+                                                    <option value="vn">VIỆT NAM</option>
+                                                    <option value="us">United States (Mỹ)</option>
+                                                    <option value="hk">Hong Kong</option>
+                                                    <option value="hu">Hungary</option>
+                                                </select>
+                                               
+                        
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label">Thời gian:</label>
+                                                <div class="col-md-12">
+                                                    
+                                                <select name="timebuy" id="" onchange="bill()" class="form-select mb-3">
+                                                        <option value="3">3 ngày</option>
+                                                        <option value="7">7 ngày</option>
+                                                        <option value="14">14 ngày</option>
+                                                        <option value="30" selected="">30 ngày</option>
+                                                        <option value="60">60 ngày</option>
+                                                        <option value="90">90 ngày</option>
+                                                        <option value="120">120 ngày</option>
+                                                        <option value="150">150 ngày</option>
+                                                        <option value="180">180 ngày</option>
+                                                        <option value="210">210 ngày</option>
+                                                        <option value="240">240 ngày</option>
+                                                        <option value="270">270 ngày</option>
+                                                        <option value="300">300 ngày</option>
+                                                        <option value="330">330 ngày</option>
+                                                        <option value="360">360 ngày</option>
+                                                    </select>
+                                                
+                        
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label">Số lượng <div id="data-quantity">
+                                                    </div></label>
+                                                <div class="12ol-md-9">
+                                                    <input type="text" class="form-control mb-3" name="quantity" onkeyup="bill();" value="100" placeholder="Nhập số lượng cần tăng">
+                                                   
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label">Ghi chú </label>
+                                                <div class="col-md-12">
+                                                    <textarea class="form-control mb-3" name="note" rows="3" placeholder="Nhập ghi chú nếu cần"></textarea>
+                                                                                       </div>
+                                            </div>
+                                            <hr>
+                                            <div class="form-group mb-3">
+                                                <div class="text-center">
+                 
+                  <h2 class="text-danger fw-semibold"><lamtilo id="total_payment">0</lamtilo> ₫</h2>
+                   <h5 class="fw-semibold"><lamtilo id="total_payment1">Tổng tiền thanh toán [<b class="text-primary">0 đ</b>/ lượt]</lamtilo></h5>
+              </div>
+                                            </div>
+
+                                            <div class="d-grid gap-2">
+    <button type="submit" class="btn btn-primary"  show="Bạn có muốn thanh toán đơn hàng?, chúng tôi sẽ không hoàn tiền với đơn đã thanh toán."><img src="/anhlamtilo/buy.svg" alt="" width="30" height="30"> Thêm đơn ngay</button>
+</div>
+                                        </form>
+                                    </div>
+
+                                    <div class="col-md-4">
+ <div class="alert bg-danger text-white" role="alert">
+    <h4 class="text-white">Vui lòng đọc tránh mất tiền</h4>
+    - IPv6 Private Proxy Phù hợp với các website có hỗ trợ IPv6. Tối đa
+                                                        1 người dùng
+                                                        cùng lúc, hoàn toàn riêng tư.<br>
+                                                        - IPv4 Private Proxy Hỗ trợ cho mọi website. Nên dùng để cài đặt bot
+                                                        tương tác hoạt
+                                                        động 1 cách tốt nhất. Tối đa 1 người dùng cùng lúc, hoàn toàn riêng
+                                                        tư.<br>
+                                                        - IPv4 Shared Proxy Phù hợp với các website có hỗ trợ IPv6. Tối đa 3
+                                                        người dùng cùng
+                                                        lúc, hoàn toàn riêng tư.<br>
+                                                        - Nên dùng IPv4 Private Proxy để cài bot tương tác. Bạn cũng có thể
+                                                        sử dụng các loại
+                                                        proxy khác, nhưng chất lượng sẽ kém hơn!.<br>
+                                                        - Phương thức kết nối của Proxy sẽ là HTTPS.<br>
+                                                        - Proxy mua xong chờ 1p -&gt; 10p là có thể kết nối.<br>
+                                                        - Chúng tôi không hoàn tiền cho đơn đã thanh toán.
+</div>       
+</div>
+                                       
+                                </div>
+                            </div>
+                            
+<div class="tab-pane p-3" id="profile2" role="tabpanel">
+                         
+
+                                 <div class="table-responsive">
+    
+    <table class="table table-bordered table-hover no-footer text-nowrap"
+         id="history-order"  >
+        <thead>
+                                        <tr role="row" >
+                                                       <th class="text-center">ID</th>
+                                                        <th class="text-center">Thao tác</th>
+                                                        <th class="text-center">Tên Proxy</th>
+                                                        <th class="text-center">IPv6</th>
+                                                        <th class="text-center">Host</th>
+                                                        <th class="text-center">Port</th>
+                                                        <th class="text-center">USER</th>
+                                                        <th class="text-center">Pass</th>
+                                                        <th class="text-center">Loại</th>
+                                                        <th class="text-center">Quốc gia</th>
+                                                        <th class="text-center">Ngày mua</th>
+                                                        <th class="text-center">Ngày hết hạn</th>
+                                                        <th class="text-center">Trạng thái</th>
+                                                        <th class="text-center">Tổng tiền</th>
+                                                        <th class="text-center">Username</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                                    </tbody>
+    </table>
+</div> </div> 
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div id="bs-example-modal-md" class="modal fade" tabindex="-1" aria-labelledby="bs-example-modal-md"
+        style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header d-flex align-items-center">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Chi tiết đơn hàng #<span id="order_id"></span>
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="p-3">
+                        <p class="text-primary mb-2">Chi tiết thanh toán</p>
+                        Số tiền đã thanh toán : <span id="payment-duymedia" class="text-danger fw-semibold">0</span> VNĐ
+                    </div>
+                    <div class="p-3 mb-5">
+                        <p class="text-primary mb-2">Dòng thời gian</p>
+                      <!--   <span class="timeline-widget mb-0 position-relative mb-n5">
+                         </span> -->
+                         <div class="timeline-widget">
+                                    
+                                </div>
+                    </div>
+                    <div class="p-3">
+                        <p class="text-primary mb-2">Chi tiết đơn hàng</p>
+                        
+                            <li class="p-1 text-start">Link: <span id="order_link"></span></li>
+                            <li class="p-1">Số lượng: <span id="order_quantity"></span></li>
+                            <li class="p-1">Bắt đầu: <span id="order_start"></span></li>
+                            <li class="p-1">Đã tăng: <span id="order_buff"></span></li>
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger text-white font-medium waves-effect"
+                        data-bs-dismiss="modal">
+                        Đóng
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+@endsection
+@section('script')
+    <script>
+        function showDetail(server_order) {
+            var detail = server_order.attr('detail');
+            if (!detail) return;
+            $('#details').html(`
+                <div class="alert bg-primary text-white ">
+                    - ${detail}
+                </div>
+            `);
+        }
+
+        function bill() {
+            var server = $('select[name=server_service]').val(); //thể loại ip
+            if (server == "6") {
+                var rate = 487.5;
+            } else if (server == "4") {
+                var rate = 1917.5;
+            } else {
+                var rate = 0;
+            }
+            var quantity = $('input[name="quantity"]').val();
+            // hiện detail nếu click vào radio
+            var time = $('select[name=timebuy]').val();
+            var sotien = rate * time;
+             
+            var soluong = sotien * quantity;
+            var tongtien = soluong + 1000;
+            var total_payment = Math.round(tongtien) ?? 0;
+            $('#total_payment').html(formatNumber(total_payment));
+             
+            $('#total_payment1').html(`Tổng tiền thanh toán [<b class="text-primary">${rate} đ</b>/ lượt]`);
+             
+        }
+        $(document).ready(function() {
+            bill();
+        })
+
+function showModal(id) {
+            $('#bs-example-modal-md').modal('show');
+            $('#order_id').html(id);
+            $.ajax({
+                url: `{{ route('service.get.order') }}`,
+                type: 'POST',
+                data: {
+                    id: id,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status == 'success') {
+                        var order = data.data;
+                        $('#order_link').html(order.order_link);
+                        $('#order_quantity').html(formatNumber(order.quantity));
+                        $('#order_start').html(formatNumber(order.start));
+                        $('#order_buff').html(formatNumber(order.buff));
+
+                        $('#payment-duymedia').html(formatNumber(order.total_payment));
+
+                        // xoá dữ liệu cũ
+                        $('.timeline-widget').html('');
+
+                        /* map */
+                        var history = JSON.parse(order.history);
+                        history.forEach(function(item) {
+var html = `
+<div class="d-grid gap-2">
+                 
+                    <div class="d-flex align-items-center">
+              <small class="flex-shrink-0 mx-2">
+                         
+                          <span class="visually">${item.time}</span>
+                         
+                      </small>        <div class="flex-shrink-0">
+                        <span class="p-1 d-block bg-${item.status} rounded-circle">
+                          <span class="visually-hidden">New alerts</span>
+                        </span>
+                      </div>
+                      <div class="flex-grow-1 mx-2">
+                        <h5 class="mb-0 d-grid text-start">
+                          <span class="text-truncate w-100">${item.title}</span>
+                        </h5>
+                      </div>
+                      
+                    </div>
+                  
+                  
+                  
+                  
+                </div>
+                `;
+
+                        $('.timeline-widget').append(html);
+                        })
+                    } else {
+                        $('#bs-example-modal-md').modal('hide');
+                    }
+                },
+                error: function() {
+                    toastr.error('Lỗi hệ thống, vui lòng thử lại sau');
+                }
+            })
+
+        }
+        createDataTable('#history-order', '{{ route('user.order.action', ['social' => $service->service_social, 'action' => $service->slug]) }}', [{
+                data: 'id'
+            },
+       
+         
+            {
+                data: null,
+                render: function(data, type, row) {
+                    return `
+                                   <button class="btn btn-primary btn-sm me-1" title="Xem chi tiết" onclick="showModal('${row.id}')">
+                                  <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm me-1" title="Hủy đơn" onclick="orderRefund('${row.id}')">
+                                  <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-success btn-sm me-1" title="Bảo hành" onclick="orderWarranty('${row.id}')">
+                                  <i class="fas fa-check-square"></i>
+                                    </button>
+                       
+                    `;
+                }
+            },
+         
+             {
+                data: 'order_link'
+            },
+            {
+                data: 'ipv6',
+                render: function(data, type, row) {
+                    return `
+                        <span class="text-warning fw-semibold">${data}</span>
+                    `;
+                }
+            },
+            {
+                data: 'host',
+                render: function(data, type, row) {
+                    return `
+                        <span class="text-danger fw-semibold">${data}</span>
+                    `;
+                }
+            }, {
+                data: 'port',
+                render: function(data, type, row) {
+                    return `
+                        <span class="text-primary fw-semibold">${data}</span>
+                    `;
+                }
+            },
+            {
+                data: 'user',
+                render: function(data, type, row) {
+                    return `
+                        <span class="text-success fw-semibold">${data}</span>
+                    `;
+                }
+            },
+            {
+                data: 'pass',
+                render: function(data, type, row) {
+                    return `
+                        <span class="text-dark fw-semibold">${data}</span>
+                    `;
+                }
+            },
+            {
+                data: 'loai',
+                render: function(data, type, row) {
+                    return `
+                        <span class="badge bg-warning fw-semibold">${data}</span>
+                    `;
+                }
+            },
+            {
+                data: 'quocgia',
+                render: function(data, type, row) {
+                    if (data === "au") {
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                                Australia (Úc)
+                            </div>
+                        `;
+                    } else if (data === "ae") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            UAE (Các tiểu Vương quốc Ả Rập thống nhất)
+                            </div>
+                        `;
+                    }else if (data === "ca") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            Canada
+                            </div>
+                        `;
+                    }else if (data === "co") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            Colombia
+                            </div>
+                        `;
+                    }else if (data === "de") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            Germany (Đức)
+                            </div>
+                        `;
+                    }else if (data === "in") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            India (Ấn Độ)
+                            </div>
+                        `;
+                    }else if (data === "sg") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            Singapore
+                            </div>
+                        `;
+                    }else if (data === "nl") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            Netherlands (Hà Lan)
+                            </div>
+                        `;
+                    }else if (data === "gb") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            United Kingdom (Vương quốc Anh)
+                            </div>
+                        `;
+                    }else if (data === "fr") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            France (Pháp)
+                            </div>
+                        `;
+                    }else if (data === "fi") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            Finland (Phần Lan)
+                            </div>
+                        `;
+                    }else if (data === "ua") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            Ukraine
+                            </div>
+                        `;
+                    }else if (data === "ru") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            Russia (Nga)
+                            </div>
+                        `;
+                    }else if (data === "jp") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            Japan (Nhật Bản)
+                            </div>
+                        `;
+                    }else if (data === "vn") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            VIỆT NAM
+                            </div>
+                        `;
+                    }else if (data === "us") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            United States (Mỹ)
+                            </div>
+                        `;
+                    }else if (data === "hk") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            Hong Kong
+                            </div>
+                        `;
+                    }else if (data === "hu") { 
+                        return `
+                            <div class="badge bg-primary text-white fw-semibold">
+                            Hungary
+                            </div>
+                        `;
+                    } else {
+                        return `
+                            <div class="badge bg-success text-white fw-semibold">
+                                ${data}
+                            </div>
+                        `;
+                    }
+                }
+            },
+            {
+                data: 'timestart',
+                render: function(data, type, row) {
+                    return data
+                }
+            }, {
+                data: 'timeend',
+                render: function(data, type, row) {
+                    return data
+                }
+            },
+            {
+                data: 'status_order'
+            },
+            {
+                data: 'total_payment',
+                render: function(data, type, row) {
+                    return `
+                        <div class="badge bg-success text-white fw-semibold">
+                            ${formatNumber(data)} VNĐ
+                        </div>
+                    `;
+                }
+            },
+            {
+                data: 'username',
+            },
+        ])
+        swal1('Vui lòng đọc kĩ các chú ý dịch vụ trước khi lên đơn!');
+    </script>
+    <script>
+    $(document).ready(function() {
+              Swal.fire({
+                  title: 'Thông báo',
+                  text: 'Vui lòng đọc kĩ các chú ý dịch vụ trước khi lên đơn!',
+                  icon: '',
+                  confirmButtonText: 'Tôi Đã Hiểu'
+              })
+          });
+      </script>
+@endsection

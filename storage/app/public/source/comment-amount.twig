@@ -1,0 +1,477 @@
+@extends('Layout.App')
+@section('title', $service->name)
+
+@section('content')
+ 
+            <div class="row">
+                <div class="col-md-12">
+                <div class="card card-flush">
+                    <div class="card-body">
+                                    <ul class="nav nav-tabs border-bottom-none row" role="tablist">
+                                         <li class="nav-item col-md-6 mb-3 d-grid gap-2" role="presentation">
+                                            <button type="button" data-bs-toggle="tab"  aria-label="tab_order" onclick="TabControl('tab_order')" href="#tab_order" class="btn btn-outline btn-outline-primary active" aria-selected="true" role="tab">
+                                                <i class="ki-outline ki-purchase"></i> Mua Dịch Vụ
+                                            </button>
+                                        </li>
+                                        <li class="nav-item col-md-6 mb-3 d-grid gap-2" role="presentation">
+                                            <button type="button" data-bs-toggle="tab" onclick="TabControl('profile2')" aria-label="profile2" href="#profile2" class="btn btn-outline btn-outline-primary" aria-selected="false" role="tab" tabindex="-1">
+                                                <i class="ki-outline ki-element-1"></i> Lịch Sử Đơn
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+                        <div class="card-body pt-0">
+                            
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="tab_order">
+                             
+                                    <div class="col-md-12 mb-3">
+                                                <div class="alert alert-success" role="alert">
+                                                    Nghiêm cấm buff các đơn có nội dung vi phạm pháp luật, chính trị, đồ trụy... Nếu cố tình buff bạn sẽ bị trừ hết tiền và ban khỏi hệ thống vĩnh viễn, và phải chịu hoàn toàn trách nhiệm trước pháp luật.<br>
+                                                    Nếu đơn đang chạy trên hệ thống mà bạn vẫn mua ở các hệ thống bên khác, nếu có tình trạng hụt, thiếu số lượng giữa 2 bên thì sẽ không được xử lí.<br>
+                                                    Đơn cài sai thông tin hoặc lỗi trong quá trình tăng hệ thống sẽ không hoàn lại tiền.<br>
+                                                    Nếu gặp lỗi hãy nhắn tin hỗ trợ phía bên phải góc màn hình hoặc vào mục liên hệ hỗ trợ để được hỗ trợ tốt nhất
+                                                </div>
+                                            </div>
+                                        <div class="col-md-12 mb-3">
+                                            <form
+                                                action="{{ route('api.service.order', ['social' => $social->slug, 'service' => $service->slug]) }}"
+                                                method="POST" request="duymedia">
+                                                <div class="form-group mb-3 ">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <label for="" class="form-label ">Link Order: </label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <input type="text" class="form-control" name="link_order"
+                                                                placeholder="Nhập link hoặc ID bài viết cần tăng">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mb-3 ">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <label for="" class="form-label ">Máy Chủ: </label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <div class="mb-2">
+                                                                @foreach ($server as $item)
+                                                                <div class="mb-2">
+
+
+
+                                                                    <div class="form-check">
+                                                                        <input type="radio"
+                                                                            id="serverserrvice{{ $item->server }}"
+                                                                            class="form-check-input"
+                                                                            min="{{ $item->min }}"
+                                                                            max="{{ $item->max }}" onchange="bill()"
+                                                                            name="server_service"
+                                                                            value="{{ $item->server }}"
+                                                                            price="{{ priceServer($item->id, Auth::user()->level) }}"
+                                                                            detail="{{ $item->description }}"
+                                                                            action="{{ $item->action }}">
+                                                                        <label class="form-check-label"
+                                                                            for="serverserrvice{{ $item->server }}">Sv{{ $item->server }}
+                                                                            {!! ucfirst($item->title) !!}&nbsp;<span
+                                                                                class="badge badge-light-info text-info">{{ priceServer($item->id, Auth::user()->level) }}₫</span>&nbsp;@if ($item->status ==
+                                                                            'Active')<b class="badge badge-success"> Hoạt
+                                                                                động</b>
+                                                                            @else<b class="badge badge-danger"> Bảo Trì</b>
+                                                                            @endif</label>
+                                                                    </div>
+                                                                </div>
+                                                                @endforeach
+
+                                                            </div>
+                                                            <div id="details">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                         
+                                                <div class="form-group mb-3">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                <label for="" class="form-label">Bình luận: <span class="badge rounded-pill badge-warning" id="data-quantity"></span></label>
+</div>
+                                                <div class="col-md-9">
+                                                <textarea type="text" class="form-control" rows="4" onkeyup="bill()"
+                                                        name="comment" placeholder="Mỗi bình luận một dòng"></textarea>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            
+                                            <div class="form-group mb-3">
+                                            <div class="row">
+                                                    <div class="col-md-3">
+                                                <label for="" class="form-label ">Số Lượng: <div id="data-quantity">
+                                                    </div></label>
+                                                    </div>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control mb-3" name="quantity" onkeyup="bill();" value="100" placeholder="Nhập số lượng cần tăng">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                <div class="form-group mb-3 ">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <label for="" class="form-label ">Ghi Chú: </label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <textarea class="form-control mb-3" name="note" rows="3"
+                                                                placeholder="Nhập ghi chú nếu cần"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row justify-content-end">
+                                                        <div class="col-md-9 text-center">
+                                                            <div class="alert alert-success" role="alert">
+                                                                <h2 class="fw-bolder text-success">Tổng Thanh Toán: <span id="total_payment" class="text-danger">0</span>  ₫ </h2>
+                                                            </div>
+                                                            <div class="d-grid">
+                                                                <button type="submit" class="btn btn-primary" show="Bạn có muốn thanh toán đơn hàng?, chúng tôi sẽ không hoàn tiền với đơn đã thanh toán.">
+                                                                    Tạo Tiến Trình
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                            </form>
+                                        </div>
+
+                                         
+
+                                  
+                                </div>
+
+                                <div class="tab-pane p-3" id="profile2" role="tabpanel">
+
+
+                                    <div class="table-responsive">
+
+                                        <table class="table table-bordered table-hover no-footer text-nowrap"
+                                            id="history-order">
+                                            <thead class="text-start text-dark-400 fw-bolder fs-7 text-uppercase">
+                                                <tr role="row">
+                                                    <th class="text-center">#</th>
+                                                    <th class="text-center">Mã đơn hàng</th>
+                                                    <th class="text-center">Thao tác</th>
+
+                                                    <th class="text-center">Link đơn</th>
+                                                    <th class="text-center">Máy chủ</th>
+                                                    <th class="text-center">Số lượng</th>
+                                                    <th class="text-center">Bắt đầu</th>
+                                                    <th class="text-center">Đã tăng</th>
+                                                    <th class="text-center">Bình Luận</th>
+                                                    <th class="text-center">Giá</th>
+                                                    <th class="text-center">Tổng thanh toán</th>
+                                                    <th class="text-center">Ghi chú</th>
+                                                    <th class="text-center">Trạng thái</th>
+                                                    <th class="text-center">Thời gian</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody role="alert" aria-live="polite" aria-relevant="all" class="text-start text-dark-700 fw-bolder fs-7 text-uppercase">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="bs-example-modal-md" class="modal fade" tabindex="-1" aria-labelledby="bs-example-modal-md" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white d-flex align-items-center">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Chi tiết đơn hàng #<span id="order_id"></span>
+                    </h4>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Chi tiết thanh toán -->
+                    <div class="p-4 bg-light border rounded mb-4">
+                        <p class="text-primary mb-2 fs-5 fw-bold">Chi tiết thanh toán</p>
+                        <p>Số tiền đã thanh toán: <span id="payment-duymedia" class="text-danger fw-semibold">0</span> VNĐ</p>
+                    </div>
+                    <!-- Dòng thời gian -->
+                    <div class="p-4 bg-light border rounded mb-4">
+                        <p class="text-primary mb-2 fs-5 fw-bold">Dòng thời gian</p>
+                        <div class="timeline-widget">
+                            <!-- Nội dung dòng thời gian sẽ được chèn vào đây -->
+                        </div>
+                    </div>
+                    <!-- Chi tiết đơn hàng -->
+                    <div class="p-4 bg-light border rounded">
+                        <p class="text-primary mb-2 fs-5 fw-bold">Chi tiết đơn hàng</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><strong>Đường dẫn:</strong> <span id="order_link"></span></li>
+                            <li class="mb-2"><strong>Số lượng:</strong> <span id="order_quantity"></span></li>
+                            <li class="mb-2"><strong>Bắt đầu:</strong> <span id="order_start"></span></li>
+                            <li class="mb-2"><strong>Đã tăng:</strong> <span id="order_buff"></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger text-white font-medium" data-bs-dismiss="modal">
+                        Đóng
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+            @endsection
+@section('script')
+    <script>
+        function showDetail(server_order) {
+            var detail = server_order.attr('detail');
+            if (!detail) return;
+            $('#details').html(`
+                <div class="alert alert-primary ">
+                 <h5 class="text-danger fw-bolder"><b>Mô tả dịch vụ</b></h5>
+                    <b>${detail}</b>
+                </div>
+            `);
+        }
+
+        function bill() {
+          var server_service = $('input[name="server_service"]:checked');
+            var price = server_service.attr('price');
+            var detail = server_service.attr('detail');
+            var min = server_service.attr('min');
+            var action = server_service.attr('action');
+            actionType(action);
+            var max = server_service.attr('max');
+            var seerver = server_service.val();
+            var comment = $('textarea[name="comment"]').val();
+            var comment_arr = comment.split('\n');
+            var comment_arr_filter = comment_arr.filter(function(e) {
+                return e.replace(/(\r\n|\n|\r)/gm, "").trim() != '';
+            });
+            var quantity = comment_arr_filter.length;
+            showDetail(server_service);
+            if (!seerver) return;
+            $('#data-quantity').html(quantity);
+            $('#total_payment1').html(`Tổng tiền thanh toán [<b class="text-primary">${price} đ</b>/ lượt]`);
+            var total_payment = Math.round(price * quantity) ?? 0;
+            $('#total_payment').html(formatNumber(total_payment));
+        }
+        $(document).ready(function() {
+            bill();
+        })
+
+function showModal(id) {
+            $('#bs-example-modal-md').modal('show');
+            $('#order_id').html(id);
+            $.ajax({
+                url: `{{ route('service.get.order') }}`,
+                type: 'POST',
+                data: {
+                    id: id,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status == 'success') {
+                        var order = data.data;
+                        $('#order_link').html(order.order_link);
+                        $('#order_quantity').html(formatNumber(order.quantity));
+                        $('#order_start').html(formatNumber(order.start));
+                        $('#order_buff').html(formatNumber(order.buff));
+
+                        $('#payment-duymedia').html(formatNumber(order.total_payment));
+
+                        // xoá dữ liệu cũ
+                        $('.timeline-widget').html('');
+
+                        /* map */
+                        var history = JSON.parse(order.history);
+                        history.forEach(function(item) {
+var html = `
+<div class="d-grid gap-2">
+                 
+                    <div class="d-flex align-items-center">
+              <small class="flex-shrink-0 mx-2">
+                         
+                          <span class="visually">${item.time}</span>
+                         
+                      </small>        <div class="flex-shrink-0">
+                        <span class="p-1 d-block bg-${item.status} rounded-circle">
+                          <span class="visually-hidden">New alerts</span>
+                        </span>
+                      </div>
+                      <div class="flex-grow-1 mx-2">
+                        <h5 class="mb-0 d-grid text-start">
+                          <span class="text-truncate w-100">${item.title}</span>
+                        </h5>
+                      </div>
+                      
+                    </div>
+                  
+                  
+                  
+                  
+                </div>
+                `;
+
+                        $('.timeline-widget').append(html);
+                        })
+                    } else {
+                        $('#bs-example-modal-md').modal('hide');
+                    }
+                },
+                error: function() {
+                    toastr.error('Lỗi hệ thống, vui lòng thử lại sau');
+                }
+            })
+
+        }
+        function TabControl(TabName) {
+            // console.log("clicked");
+            var i;
+            var x = document.getElementsByClassName("tab-pane");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            document.getElementById(TabName).style.display = "block";
+            $("#" + TabName).addClass("show");
+            // console.log(TabName);
+            if (TabName == "profile2") {
+        createDataTable('#history-order', '{{ route('user.order.action', ['social' => $service->service_social, 'action' => $service->slug]) }}', [{
+                data: 'id'
+            },
+            {
+                data: 'id',
+                render: function(data, type, row) {
+                    return `
+                        <div class="badge badge-primary fs-6  fw-semibold">
+                            SERVICES_${data}
+                        </div>
+                    `;
+                }
+        
+                
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    return `
+                                   <button class="btn btn-primary btn-sm me-1" title="Xem chi tiết" onclick="showModal('${row.id}')">
+                                  <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm me-1" title="Hủy đơn" onclick="orderRefund('${row.id}')">
+                                  <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-success btn-sm me-1" title="Bảo hành" onclick="orderWarranty('${row.id}')">
+                                  <i class="fas fa-check-square"></i>
+                                    </button>  <button class="btn btn-info btn-sm me-1" title="Tăng tốc" onclick="orderSpeed('${row.id}')">
+                                  <i class="fas fa-arrow-circle-up"></i>
+                                    </button>
+                       
+                    `;
+                }
+            },
+         
+            {
+                data: 'order_link',
+            },
+            {
+                data: 'server_service',
+                render: function(data, type, row) {
+                    return `
+                        <span class="badge badge-primary bg-sm bg-dim">Máy chủ ${data}</span>
+                    `;
+                }
+            }, {
+                data: 'quantity',
+                render: function(data, type, row) {
+                    return `
+                          <b class="">${formatNumber(data)}</b>
+                    `;
+                }
+            },
+            {
+                data: 'start',
+                render: function(data, type, row) {
+                     return `
+                          <b class="">${formatNumber(data)}</b>
+                    `;
+                }
+            },
+            {
+                data: 'buff',
+                render: function(data, type, row) {
+                     return `
+                          <b class="">${formatNumber(data)}</b>
+                    `;
+                }
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    return `<textarea class="form-control note" rows="3" readonly="" style="min-width: 200px;">${JSON.parse(row.action).comment}</textarea>`;
+                   
+                }
+            },
+            {
+                data: 'price',
+                render: function(data, type, row) {
+                    return `
+                <b class="text-danger">${formatNumber(data)}</b> <sup>Đ</sup> 
+                  
+                    `;
+                }
+            },
+            {
+                data: 'total_payment',
+                render: function(data, type, row) {
+                    return `
+                          <b class="text-danger">${formatNumber(data)}</b> <sup>VNĐ</sup> 
+                    `;
+                }
+            },
+            {
+                data: 'note',
+                render: function(data, type, row) {
+                     return `<textarea class="form-control note" rows="3" readonly="" style="min-width: 200px;">${data}</textarea>`;
+                }
+            }, {
+                data: 'status_order',
+                render: function(data, type, row) {
+                    return data
+                }
+            },
+            
+            
+               {
+                data: 'created_at'
+            }
+        ])
+         }
+            $(".active-panel").removeClass("active-panel");
+            $("." + TabName).addClass("active-panel");
+        }
+        swal1('Vui lòng đọc kĩ các chú ý dịch vụ trước khi lên đơn!');
+    </script>
+    <script>
+    $(document).ready(function() {
+              Swal.fire({
+                  title: 'Thông báo',
+                  text: 'Vui lòng đọc kĩ các chú ý dịch vụ trước khi lên đơn!',
+                  icon: '',
+                  confirmButtonText: 'Tôi Đã Hiểu'
+              })
+          });
+      </script>
+@endsection

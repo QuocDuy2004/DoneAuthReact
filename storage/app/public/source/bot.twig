@@ -1,0 +1,2102 @@
+@extends('Layout.App')
+@section('title', $social->name . ' ' . $service->name)
+
+@section('content')
+ <div class="main-content app-content">
+    <div class="container-fluid">
+            <div class="card card-flush">
+                  
+                    <div class="card-body">
+                        <ul class="nav nav-justified nav-light nav-tabs    mb-4">
+    <li class="nav-item">
+        <a class="nav-link active  rounded-pill" data-bs-toggle="tab" href="#tab_order">
+            <span class="nav-icon-wrap"><span class="feather-icon"><i class="fa fa-shopping-basket"></i></span></span>
+            <span class="nav-link-text">&nbsp;Đơn Hàng</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link  rounded-pill" data-bs-toggle="tab" href="#profile2">
+            <span class="nav-icon-wrap"><span class="feather-icon"><i class="fa fa-history"></i></span></span>
+            <span class="nav-link-text">&nbsp;Danh Sách Đơn</span>
+        </a>
+    </li>
+</ul>     
+                     <div class="tab-content">
+                            <div class="tab-pane fade show active" id="tab_order">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                    <form action="{{ route('api.service.order', ['social' => $social->slug, 'service' => $service->slug]) }}" method="POST" request="duymedia">
+                                           
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label col-md-3">Chọn proxy:</label>
+                                                <div class="col-md-12">
+                                                    
+                                                <select name="proxy" id=""  class="form-select mb-3">
+                                                <option value="" selected="">--Chọn proxy--</option> 
+                                                @foreach ($server as $item)
+                                                <option value="http://{{ $item->user }}:{{$item->pass}}{{ '@' . $item->ipv6 }}:{{$item->port}}" >{{$item->order_link}}</option>   
+                                                @endforeach
+                                                    </select>
+                                               
+                        
+                                                </div>
+                                            </div>  
+
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label col-md-3">Access Token: <a type="button" style="background: green; border-radius: 3px; box-sizing: inherit; color: white; display: inline-block; font-family: &quot;Hammersmith One&quot;, Tahoma, Arial; font-size: 0.9rem; margin: 0px 0.3em 3px 0px; outline: 0px; padding: 0.2em 1.2em; text-decoration-line: none; text-transform: uppercase; transition: all 0.3s ease;" onclick="HuongDan()">Hướng Dẫn</a></label>
+                                                <div class="col-md-12">
+                                                    <input type="text" class="form-control mb-3" name="link_order"
+                                                         placeholder="Nhập Token (bắt buộc)" required="" onchange="checktoken()">
+                                                     
+                                                </div> 
+                                            </div>
+                                            <div id="lamtilodvfb"></div>
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label col-md-3">Cookie:</label>
+                                                <div class="col-md-12">
+                                                    <input type="text" class="form-control mb-3" name="cookie"
+                                                        placeholder="Nhập Cookie (không bắt buộc)">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label col-md-3">Thời hạn:</label>
+                                                <div class="col-md-12">
+                                                    
+                                                <select name="timebuy" id="" onchange="bill()" class="form-select mb-3">
+                                                        <option value="" selected="">--Chọn thời hạn--</option>        
+                                                        <option value="30">30 ngày</option>
+                                                        <option value="60">60 ngày</option>
+                                                        <option value="90">90 ngày</option>
+                                                        <option value="120">120 ngày</option>
+                                                        <option value="150">150 ngày</option>
+                                                        <option value="180">180 ngày</option>
+                                                        <option value="210">210 ngày</option>
+                                                        <option value="240">240 ngày</option>
+                                                        <option value="270">270 ngày</option>
+                                                        <option value="300">300 ngày</option>
+                                                        <option value="330">330 ngày</option>
+                                                        <option value="360">360 ngày</option>
+                                                    </select>
+                                                
+                        
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label col-md-3">Thời gian hoạt động:</label>
+                                                <div class="col-md-12">
+                                                    
+                                                <div class="row">
+                                    <div class="col-md-6">
+                                    <div class="input-group">
+                                    <div  class="btn btn-secondary  mb-3"><i class="fa fa-plays" aria-hidden="true"></i>Từ</div>
+                                    <select name="time_start" class="form-select mb-3">
+                                                <option value="1">1 </option>
+                                                <option value="2">2 </option>
+                                                <option value="3">3 </option>
+                                                <option value="4">4 </option>
+                                                <option value="5">5 </option>
+                                                <option value="6">6 </option>
+                                                <option value="7" selected="">7 </option>
+                                                <option value="8">8 </option>
+                                                <option value="9">9 </option>
+                                                <option value="10">10 </option>
+                                                <option value="11">11 </option>
+                                                <option value="12">12 </option>
+                                                <option value="13">13 </option>
+                                                <option value="14">14 </option>
+                                                <option value="15">15 </option>
+                                                <option value="16">16 </option>
+                                                <option value="17">17 </option>
+                                                <option value="18">18 </option>
+                                                <option value="19">19 </option>
+                                                <option value="20">20 </option>
+                                                <option value="21">21 </option>
+                                                <option value="22">22 </option>
+                                            </select>
+ <div  class="btn btn-secondary mb-3"> Giờ</div>
+
+</div>
+                                    </div><div class="col-md-6">
+                                    <div class="input-group">
+                                    <div  class="btn btn-secondary mb-3">Đến</div>
+                                    <select name="time_end" class="form-select mb-3">
+                                                <option value="1">1 </option>
+                                                <option value="2">2 </option>
+                                                <option value="3">3 </option>
+                                                <option value="4">4 </option>
+                                                <option value="5">5 </option>
+                                                <option value="6">6 </option>
+                                                <option value="7" selected="">7 </option>
+                                                <option value="8">8 </option>
+                                                <option value="9">9 </option>
+                                                <option value="10">10 </option>
+                                                <option value="11">11 </option>
+                                                <option value="12">12 </option>
+                                                <option value="13">13 </option>
+                                                <option value="14">14 </option>
+                                                <option value="15">15 </option>
+                                                <option value="16">16 </option>
+                                                <option value="17">17 </option>
+                                                <option value="18">18 </option>
+                                                <option value="19">19 </option>
+                                                <option value="20">20 </option>
+                                                <option value="21">21 </option>
+                                                <option value="22">22 </option>
+                                            </select>
+ <div  class="btn btn-secondary mb-3"> Giờ</div>
+
+</div>
+                                    </div>
+                                </div>
+                                                
+                        
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label col-md-3">Tốc độ:</label>
+                                                <div class="col-md-12">
+                                                    
+                                                <div class="row">
+                                    <div class="col-md-4">
+                                    <div class="input-group">
+                                    <div  class="btn btn-secondary  mb-3">Tương tác</div>
+                                    <select name="limit_post" class="form-select mb-3">
+                                    <option value="1" selected="">1 </option>
+                                     
+                                            </select>
+ <div  class="btn btn-secondary mb-3"> lần</div>
+
+</div>
+                                    </div>
+                                    <div class="col-md-4">
+                                    <div class="input-group">
+                                    <div  class="btn btn-secondary  mb-3">Mỗi</div>
+                                    <select name="speed_from" class="form-select mb-3">
+                                    <option value="3" selected="">3 </option>
+                                                <option value="4">4 </option>
+                                                <option value="5">5 </option>
+                                                <option value="6">6 </option>
+                                                <option value="7" >7 </option>
+                                                <option value="8">8 </option>
+                                                <option value="9">9 </option>
+                                                <option value="10">10 </option>
+                                              
+                                            </select>
+ <div  class="btn btn-secondary mb-3"> Phút</div>
+
+</div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                    <div class="input-group">
+                                    <div  class="btn btn-secondary mb-3 ">Đến</div>
+                                    <select name="speed_to" class="form-select mb-3">
+                                                
+                                     
+                                                <option value="4" selected="">4 </option>
+                                                <option value="5">5 </option>
+                                                <option value="6">6 </option>
+                                                <option value="7" >7 </option>
+                                                <option value="8">8 </option>
+                                                <option value="9">9 </option>
+                                                <option value="10">10 </option>
+                                                <option value="11">11 </option>
+                                                <option value="12">12 </option>
+                                                <option value="13">13 </option>
+                                                <option value="14">14 </option>
+                                                <option value="15">15 </option>
+                                                <option value="16">16 </option>
+                                                <option value="17">17 </option>
+                                                <option value="18">18 </option>
+                                                <option value="19">19 </option>
+                                                <option value="20">20 </option>
+                                                <option value="21">21 </option>
+                                                <option value="22">22 </option>
+                                                <option value="23">23 </option>
+                                                <option value="24">24 </option>
+                                                <option value="25">25 </option>
+                                                <option value="26">26 </option>
+                                                <option value="27">27 </option>
+                                                <option value="28">28 </option>
+                                                <option value="29">29 </option>
+                                                <option value="30">30 </option>
+                                                
+                                                
+                                            </select>
+ <div  class="btn btn-secondary mb-3 "> Phút</div>
+
+</div>
+                                    </div>
+                                </div>
+                                                
+                        
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label col-md-3">Tương tác một ngày:</label>
+                                                <div class="col-md-12">
+                                                    
+                                                <select name="limit_per_day" id=""   class="form-select mb-3">
+                                                <option value="50">
+                                        50 </option>
+                                    <option value="100">
+                                        100 </option>
+                                    <option value="150">
+                                        150 </option>
+                                    <option value="200">
+                                        200 </option>
+                                    <option value="250">
+                                        250 </option>
+                                    <option value="300">
+                                        300 </option>
+                                    <option value="350">
+                                        350 </option>
+                                    <option value="400">
+                                        400 </option>
+                                    <option value="450">
+                                        450 </option>
+                                    <option value="500">
+                                        500 </option>
+                                    <option value="550">
+                                        550 </option>
+                                    <option value="600">
+                                        600 </option>
+                                    <option value="650">
+                                        650 </option>
+                                    <option value="700">
+                                        700 </option>
+                                    <option value="750">
+                                        750 </option>
+                                    <option value="800">
+                                        800 </option>
+                                                    </select>
+                                               
+                        
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label col-md-3">Target:</label>
+                                                <div class="col-md-12">
+                                                    
+                                                <select name="target" id="" onchange="showtarget()" class="form-select mb-3">
+                                                          
+                                                        <option value="all" selected="">Bảng tin</option>
+                                                        <option value="custom">Tuỳ chỉnh ID</option>
+                                                  
+                                                    </select>
+                                             
+                        
+                                                </div>
+                                            </div>
+                                            <div class="form-group  row mb-3" id="target1" style="display:none">
+                                            <label for="" class="form-label col-md-3">Danh sách ID:</label>
+                            <div class="col-md-12">
+                            <ul class="nav nav-line nav-light nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#profile">
+                                <span class="nav-link-text">PROFILE/PAGE PRO5</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#group">
+                                <span class="nav-link-text">PAGE BASIC</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#page">
+                                <span class="nav-link-text">GROUP</span>
+                            </a>
+                        </li>
+                    </ul>
+                                <div class="tab-content col-md-12">
+                                    <div class="tab-pane active" id="profile" role="tabpanel">
+                               
+                                        <textarea class="form-control mb-3" name="uidsprofile" placeholder="Nhập danh sách ID Profile, Page Pro5 cần target. Mỗi ID 1 dòng" rows="3"></textarea>
+                                        
+                                    </div>  
+                                    <div class="tab-pane" id="group" role="tabpanel">
+                                    
+                                        <textarea class="form-control mb-3" name="uidsgroup" placeholder="Nhập danh sách ID Group cần target. Mỗi ID 1 dòng" rows="3"></textarea>
+                                        
+                                    </div>  
+                                    <div class="tab-pane" id="page" role="tabpanel">
+                                     
+                                        <textarea class="form-control mb-3" name="uidspage" placeholder="Nhập danh sách ID Page cần target. Mỗi ID 1 dòng" rows="3"></textarea>
+                                       
+                                                
+                                    </div>
+                                </div>
+                                <br>
+                                <p>Lưu ý rằng Page Pro5 sẽ có 2 dạng ID. Ví dụ page này có 2 dạng ID là <kbd>100069153349307</kbd> (dạng PRO5) và <kbd>1509435412435707</kbd> (dạng Basic). Nếu bạn nhập ID dạng nào vui lòng chọn đúng loại page của dạng đó.</p>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                                                <label for="" class="form-label col-md-3">Blacklist:</label>
+                                                <div class="col-md-12">
+                                                <textarea class="form-control mb-3" name="black_list" placeholder="Nhập danh sách các UID  bạn không muốn tương tác vào đây" rows="3"></textarea>
+                                                   
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label col-md-3">Cảm xúc:</label>
+                                                <div class="col-md-12">
+                                                    <div class="form-check form-check-inline">
+                                                        <label class="form-check-label " for="reaction0">
+                                                            <input class="form-check-input checkbox d-none" type="radio"
+                                                                data-prices="101" id="reaction0" name="reaction"
+                                                                value="like" checked=""><img
+                                                                src="/assets/images/reaction/like.png" alt="image"
+                                                                class="d-block ml-2 rounded-circle" width="35">
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <label class="form-check-label " for="reaction1">
+                                                            <input class="form-check-input checkbox d-none" type="radio"
+                                                                data-prices="100" id="reaction1" name="reaction"
+                                                                value="love"><img src="/assets/images/reaction/love.png"
+                                                                alt="image" class="d-block ml-2 rounded-circle"
+                                                                width="35">
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <label class="form-check-label " for="reaction2">
+                                                            <input class="form-check-input checkbox d-none" type="radio"
+                                                                data-prices="100" id="reaction2" name="reaction"
+                                                                value="care"><img src="/assets/images/reaction/care.png"
+                                                                alt="image" class="d-block ml-2 rounded-circle"
+                                                                width="35">
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <label class="form-check-label " for="reaction3">
+                                                            <input class="form-check-input checkbox d-none" type="radio"
+                                                                data-prices="100" id="reaction3" name="reaction"
+                                                                value="haha"><img src="/assets/images/reaction/haha.png"
+                                                                alt="image" class="d-block ml-2 rounded-circle"
+                                                                width="35">
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <label class="form-check-label " for="reaction4">
+                                                            <input class="form-check-input checkbox d-none" type="radio"
+                                                                data-prices="100" id="reaction4" name="reaction"
+                                                                value="wow"><img src="/assets/images/reaction/wow.png"
+                                                                alt="image" class="d-block ml-2 rounded-circle"
+                                                                width="35">
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <label class="form-check-label " for="reaction6">
+                                                            <input class="form-check-input checkbox d-none" type="radio"
+                                                                data-prices="100" id="reaction6" name="reaction"
+                                                                value="sad"><img src="/assets/images/reaction/sad.png"
+                                                                alt="image" class="d-block ml-2 rounded-circle"
+                                                                width="35">
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <label class="form-check-label " for="reaction7">
+                                                            <input class="form-check-input checkbox d-none" type="radio"
+                                                                data-prices="100" id="reaction7" name="reaction"
+                                                                value="angry"><img
+                                                                src="/assets/images/reaction/angry.png" alt="image"
+                                                                class="d-block ml-2 rounded-circle" width="35">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label col-md-3">Bot Stories:</label>
+                                                <div class="col-md-12">
+                                                    
+                                                <select name="stories_enable" id=""  class="form-control mb-3" readonly>
+                                                          
+                                                        <option value="0" selected="">Tắt</option>
+                                                   
+                                                  
+                                                    </select>
+                                              
+                        
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="" class="form-label col-md-3">Bot Comment:</label>
+                                                <div class="col-md-12">
+                                                    
+                                                <select name="comment_enable" id="" onchange="hiencomment()" class="form-select mb-3" >
+                                                          
+                                                        <option value="0" selected="">Tắt</option>
+                                                        <option value="1">Bật</option>
+                                                   
+                                                  
+                                                    </select>
+                                            
+                        
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3"  id="lamtilo" style="display: none;">
+                                                <label for="" class="form-label col-md-3">Nội dung:</label>
+                                                <div class="col-md-12">
+                                                <textarea class="form-control border border-info text-info" id="content" name="content" placeholder="Nhập nội dung, mỗi nội dung khác nhau phân tách bởi dấu |" rows="6"></textarea>
+                                                   
+                                              
+                                                </div>
+                                                
+                                            </div>
+
+                                            <div class="modal fade" tabindex="-1" role="dialog" id="list_sticker" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Xem Sticker</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                    </div>
+
+                                    <div class="modal-body" style="text-align:center" id="imgSticker">
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3"  id="lamtilo1" style="display: none;">
+                                                <label for="" class="form-label col-md-3">Sticker: <a type="button" style="background: green; border-radius: 3px; box-sizing: inherit; color: white; display: inline-block; font-family: &quot;Hammersmith One&quot;, Tahoma, Arial; font-size: 0.9rem; margin: 0px 0.3em 3px 0px; outline: 0px; padding: 0.2em 1.2em; text-decoration-line: none; text-transform: uppercase; transition: all 0.3s ease;" onclick="xemsticker()">Xem Sticker</a></label>
+                                                <div class="col-md-12">
+                                <select class="form-select mb-3" id="sticker" name="sticker">
+                                <option value="off">Tắt</option>
+                                    <option value="1" data-sticker-name="QooBee dễ thương vô đối">
+                                        QooBee dễ thương vô đối </option>
+                                    <option value="2" data-sticker-name="QooBee Agapi">
+                                        QooBee Agapi </option>
+                                    <option value="3" data-sticker-name="Bánh Bao">
+                                        Bánh Bao </option>
+                                    <option value="4" data-sticker-name="Bánh Quy">
+                                        Bánh Quy </option>
+                                    <option value="5" data-sticker-name="Batman &amp; Superman">
+                                        Batman &amp; Superman </option>
+                                    <option value="6" data-sticker-name="Biệt Đội Cảm Tử">
+                                        Biệt Đội Cảm Tử </option>
+                                    <option value="7" data-sticker-name="Biệt Đội Đánh Thuê">
+                                        Biệt Đội Đánh Thuê </option>
+                                    <option value="8" data-sticker-name="Biệt Đội Săn Ma">
+                                        Biệt Đội Săn Ma </option>
+                                    <option value="9" data-sticker-name="Biểu tượng cảm xúc">
+                                        Biểu tượng cảm xúc </option>
+                                    <option value="10" data-sticker-name="Bộ Ba Đáng Kinh Sợ">
+                                        Bộ Ba Đáng Kinh Sợ </option>
+                                    <option value="11" data-sticker-name="Bóng Đá">
+                                        Bóng Đá </option>
+                                    <option value="12" data-sticker-name="Bọt Biển">
+                                        Bọt Biển </option>
+                                    <option value="13" data-sticker-name="Bộ Tóc Rồng">
+                                        Bộ Tóc Rồng </option>
+                                    <option value="14" data-sticker-name="Brown và những người bạn">
+                                        Brown và những người bạn </option>
+                                    <option value="15" data-sticker-name="Bruce Lee(Lý Tiểu Long)">
+                                        Bruce Lee(Lý Tiểu Long) </option>
+                                    <option value="16" data-sticker-name="Bữa tiệc của những chú lười">
+                                        Bữa tiệc của những chú lười </option>
+                                    <option value="17" data-sticker-name="Candy Crush">
+                                        Candy Crush </option>
+                                    <option value="18" data-sticker-name="Cậu bé mất tích">
+                                        Cậu bé mất tích </option>
+                                    <option value="19" data-sticker-name="Chó gấu trúc Nhật">
+                                        Chó gấu trúc Nhật </option>
+                                    <option value="20" data-sticker-name="Chúc mừng sinh nhật">
+                                        Chúc mừng sinh nhật </option>
+                                    <option value="21" data-sticker-name="Chú gấu đáng yêu">
+                                        Chú gấu đáng yêu </option>
+                                    <option value="22" data-sticker-name="Chú hổ Rimau">
+                                        Chú hổ Rimau </option>
+                                    <option value="23" data-sticker-name="Chú lùn">
+                                        Chú lùn </option>
+                                    <option value="24" data-sticker-name="Điệu cười ma quái">
+                                        Điệu cười ma quái </option>
+                                    <option value="25" data-sticker-name="Động vật">
+                                        Động vật </option>
+                                    <option value="26" data-sticker-name="Everwing">
+                                        Everwing </option>
+                                    <option value="27" data-sticker-name="Facebook Foxes">
+                                        Facebook Foxes </option>
+                                    <option value="28" data-sticker-name="Hacker Nữ">
+                                        Hacker Nữ </option>
+                                    <option value="29" data-sticker-name="Kẻ Lừa Đảo">
+                                        Kẻ Lừa Đảo </option>
+                                    <option value="30" data-sticker-name="Kẻ trộm mặt trăng">
+                                        Kẻ trộm mặt trăng </option>
+                                    <option value="31" data-sticker-name="Kung Fu Panda">
+                                        Kung Fu Panda </option>
+                                    <option value="32" data-sticker-name="Manchester United">
+                                        Manchester United </option>
+                                    <option value="33" data-sticker-name="Napoli">
+                                        Napoli </option>
+                                    <option value="34" data-sticker-name="Olympia">
+                                        Olympia </option>
+                                    <option value="35" data-sticker-name="Quái vật">
+                                        Quái vật </option>s
+                                </select>
+                           
+                        
+                                                </div>
+                            
+                        </div>
+                        <div class="form-group mb-3" id="lamtilo2" style="display: none;">
+                       <label for="" class="form-label col-md-3">Ảnh:</label>
+                                                <div class="col-md-12">
+                                <select class="form-select mb-3" name="images" id="images" onchange="hienImages(); hienImages1();">
+                                    <option value="off">Tắt</option>
+                                    <option value="link">Nhập link ảnh</option>
+                                    <option value="auto">Tự động ghép ảnh</option>
+                                    <option value="auto_name">Tự động ghép tên vào ảnh</option>
+                                    <option value="auto_avatar" disabled="">Tự động ghép avatar vào ảnh (comming soon)
+                                </select>
+                         
+                                <br>
+                                <div class="col-md-12" id="image_link_area" style="display:none">
+                                    <textarea id="image_link" class="form-control mb-3" rows="4" placeholder="Nhập link ảnh trực tiếp vào đây (đuôi .jpg, .png), mỗi link 1 dòng" style="" name="image_link"></textarea>
+                               
+                                </div>
+                                
+                                <div class="col-md-12"  id="image_auto_custom_text" style="display:none">
+                               
+                                    <input type="text" class="form-control mb-3" name="image_auto_custom" placeholder="Nhập 1 dòng nội dung ngắn bạn muốn ghép vào ảnh. Ví dụ: Chiến thần tương tác tại web SubReTop1.Com" fdprocessedid="kz8p5e">
+                                 
+                                </div>
+                            </div>
+                        </div>
+
+                                            <hr>
+                                            <div class="form-group mb-3">
+                                                <div class="text-center">
+                 
+                  <h2 class="text-danger fw-semibold"><lamtilo id="total_payment">0</lamtilo> ₫</h2>
+                   <h5 class="fw-semibold"><lamtilo id="total_payment1">Tổng tiền thanh toán [<b class="text-primary">0 đ</b>/ lượt]</lamtilo></h5>
+              </div>
+                                            </div>
+
+                                            <div class="d-grid gap-2">
+    <button type="submit" class="btn btn-primary"  show="Bạn có muốn thanh toán đơn hàng?, chúng tôi sẽ không hoàn tiền với đơn đã thanh toán."><img src="/anhlamtilo/buy.svg" alt="" width="30" height="30"> Thêm đơn ngay</button>
+</div>
+                                        </form>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                       
+<div class="alert bg-danger text-white">
+          <h5 class="mb-0 text-white">Lưu ý khi mua!</h5>
+          <div class="my-3 border-top"></div>
+          <p class="card-text text-white">- Nghiêm cấm buff các đơn có nội dung vi phạm pháp luật, chính trị, đồ trụy...
+            Nếu
+            cố tình buff bạn sẽ bị trừ hết tiền và ban khỏi hệ thống vĩnh viễn, và phải chịu hoàn toàn trách
+            nhiệm trước pháp luật.</p>
+          <p class="card-text">- Nếu đơn đang chạy trên hệ thống mà bạn vẫn mua ở các hệ thống bên khác, nếu
+            có
+            tình
+            trạng hụt, thiếu số lượng giữa 2 bên thì sẽ không được xử lí.</p>
+          <p class="card-text">- Đơn cài sai thông tin hoặc lỗi trong quá trình tăng hệ thống sẽ không hoàn
+            lại
+            tiền.</p>
+          <p class="card-text">- Nếu gặp lỗi hãy nhắn tin hỗ trợ phía bên phải góc màn hình hoặc vào mục liên
+            hệ
+            hỗ trợ để được hỗ trợ tốt nhất</p>
+      </div>
+</div>
+                                       
+                                </div>
+                            </div>
+                            
+<div class="tab-pane p-3" id="profile2" role="tabpanel">
+                         
+
+                                 <div class="table-responsive">
+    
+    <table class="table table-bordered table-hover no-footer text-nowrap"
+         id="history-order"  >
+        <thead>
+                                        <tr role="row" >
+                                                       <th class="text-center">ID</th>
+                                                        <th class="text-center">Trạng thái</th>
+                                                        <th class="text-center">Order ID</th>
+                                                        
+                                                      
+                                                        <th class="text-center">Hành động</th>
+                                                        <th class="text-center">User ID</th>
+                                                        <th class="text-center">Name</th>
+                                                        <th class="text-center">Notes</th>
+                                                        <th class="text-center">PROXY</th>
+                                                        <th class="text-center">Tốc độ</th>
+                                                        <th class="text-center">Giới hạn</th>
+                                                        <th class="text-center">Cảm xúc</th>
+                                                        <th class="text-center">Thời gian</th>
+                                                        <th class="text-center">Số ngày</th>
+                                                        <th class="text-center">Ngày hết hạn</th>
+                                                        <th class="text-center">Tổng tiền</th>
+                                                        <th class="text-center">USER</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                                    </tbody>
+    </table>
+</div> </div> 
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div id="bs-example-modal-md" class="modal fade" tabindex="-1" aria-labelledby="bs-example-modal-md"
+        style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header d-flex align-items-center">
+                    <h4 class="modal-title" id="myModalLabel">
+                        Chi tiết đơn hàng #<span id="order_id"></span>
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="p-3">
+                        <p class="text-primary mb-2">Chi tiết thanh toán</p>
+                        Số tiền đã thanh toán : <span id="payment-duymedia" class="text-danger fw-semibold">0</span> VNĐ
+                    </div>
+                    <div class="p-3 mb-5">
+                        <p class="text-primary mb-2">Dòng thời gian</p>
+                      <!--   <span class="timeline-widget mb-0 position-relative mb-n5">
+                         </span> -->
+                         <div class="timeline-widget">
+                                    
+                                </div>
+                    </div>
+                    <div class="p-3">
+                        <p class="text-primary mb-2">Chi tiết đơn hàng</p>
+                        
+                            <li class="p-1 text-start">Link: <span id="order_link"></span></li>
+                            <li class="p-1">Số lượng: <span id="order_quantity"></span></li>
+                            <li class="p-1">Bắt đầu: <span id="order_start"></span></li>
+                            <li class="p-1">Đã tăng: <span id="order_buff"></span></li>
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger text-white font-medium waves-effect"
+                        data-bs-dismiss="modal">
+                        Đóng
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" tabindex="-1" id="noticeShow">
+    <div class="modal-dialog modal-center modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Hướng dẫn get token</h5>
+
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-2x"></span>
+                </div>
+
+            </div>
+            <div class="modal-body" style="font-size: 20px">
+                <p>
+                    Bước 1: <a class="btn btn-info btn-lg" href="https://trum.vip/api/services/bot/token?authorize" target="_blank">Cấp quyền</a><br><br>
+                    <img src="/dist/images/pZZefGY.png" style="width:100%"><br>
+                    Chỉ cần làm bước này 1 lần duy nhất. Từ lần sau bạn có thể thực hiện luôn Bước 2.
+                </p>
+                <hr>
+                <p>
+                    Bước 2: <a class="btn btn-success btn-lg" href="https://trum.vip/api/services/bot/token" target="_blank">Lấy link</a><br><br>
+                    <img src="/dist/images/wsLOaCa.png" style="width:100%">
+                    Copy toàn bộ văn bản trong thanh địa chỉ của trình duyệt rồi dán vào phần Access Token của phần cài BOT.
+                </p>
+                <hr>
+                <p>Hoặc bạn cũng có thể <a class="btn btn-info" href="https://trum.vip/public/extension/Get-CookieToken-Pro-v1.2-TrumVIP.zip">Tải tiện ích</a>, sau đó giải nén và cài đặt lên trình duyệt chrome. Ảnh tiện ích sau khi cài như bên dưới:<br>
+                    <img src="/dist/images/UWxaBX5.jpg" style="width:100%">
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+@section('script')
+    <script>
+        function HuongDan() {
+        $('#noticeShow').modal('show');
+    }
+    function hiencomment() {
+        var stories_enable = $('select[name=comment_enable]').val();
+        if (stories_enable == "1") {
+            document.getElementById("lamtilo").style = '';
+            document.getElementById("lamtilo1").style = '';
+            document.getElementById("lamtilo2").style = '';
+        } else {
+            document.getElementById("lamtilo").style.display = 'none';
+            document.getElementById("lamtilo1").style.display = 'none';
+            document.getElementById("lamtilo2").style.display = 'none';
+        }
+    }
+        function showDetail(server_order) {
+            var detail = server_order.attr('detail');
+            if (!detail) return;
+            $('#details').html(`
+                <div class="alert bg-warning text-white fw-semibold">
+                    - ${detail}
+                </div>
+            `);
+        }
+        function showtarget() {
+        var target = $('select[name=target]').val();
+        if (target == "custom") {
+            document.getElementById("target1").style = '';
+        } else {
+            document.getElementById("target1").style.display = 'none';
+        }
+    }
+        function bill() {
+            var days = $('select[name=timebuy]').val();
+            var rate = 1000;
+            var total_payment = Math.round(days * rate) ?? 0;
+             
+            $('#total_payment1').html(`Tổng tiền thanh toán [<b class="text-primary">${rate} đ</b>/ lượt]`);
+            $('#total_payment').html(formatNumber(total_payment));
+        }
+        $(document).ready(function() {
+            bill();
+        })
+        function checktoken() {
+        var token = $("#link_order").val();
+        $.ajax({
+                url: `{{ route('service.get.token') }}`,
+                type: 'POST',
+                data: {
+                    token: token,
+                     
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status == 'success') {
+                        // var history = JSON.parse(data);
+                        // history.forEach(function(item) {
+                        $('#lamtilodvfb').html(`
+                        
+                        <div class="form-group mb-3">
+                            
+                                
+                                <label for="" class="form-label">User ID:</label>
+                                                <div class="col-md-12">
+                           
+                                <input type="text" name="user_id" id="user_id" class="form-control mb-3" value="${data.data.user_id}" readonly="">
+                                <label for="">
+                                                        <i class="ti ti-notebook fs-4 text-info"></i>
+                                                        <span class="border-start border-info ps-2">
+                                                        User ID
+                                                        </span>
+                                                    </label>
+                        </div>
+                        
+                         <div class="form-group mb-3">
+                         <label for="" class="form-label">Tên:</label>
+                                                <div class="col-md-12">
+                          
+                                <input type="text" name="name" id="name" class="form-control mb-3" value="${data.data.name}" readonly="">
+                                <label for="">
+                                                        <i class="ti ti-notebook fs-4 text-info"></i>
+                                                        <span class="border-start border-info ps-2">
+                                                        Tên
+                                                        </span>
+                                                    </label>
+                        </div>`);
+                        toastr.success('Token Live');
+                    // })
+                    } else {
+                        toastr.error('Token DIE hoặc không hợp lệ. Vui lòng kiểm tra lại.!');
+                    }
+                },
+                error: function() {
+                    toastr.error('Lỗi hệ thống, vui lòng thử lại sau');
+                }
+            })
+       
+
+    };
+        function showDetail(server_order) {
+            var detail = server_order.attr('detail');
+            if (!detail) return;
+            $('#details').html(`
+                <div class="alert bg-primary text-white ">
+                    - ${detail}
+                </div>
+            `);
+        }
+
+   
+        $(document).ready(function() {
+            bill();
+        })
+
+function showModal(id) {
+            $('#bs-example-modal-md').modal('show');
+            $('#order_id').html(id);
+            $.ajax({
+                url: `{{ route('service.get.order') }}`,
+                type: 'POST',
+                data: {
+                    id: id,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status == 'success') {
+                        var order = data.data;
+                        $('#order_link').html(order.order_link);
+                        $('#order_quantity').html(formatNumber(order.quantity));
+                        $('#order_start').html(formatNumber(order.start));
+                        $('#order_buff').html(formatNumber(order.buff));
+
+                        $('#payment-duymedia').html(formatNumber(order.total_payment));
+
+                        // xoá dữ liệu cũ
+                        $('.timeline-widget').html('');
+
+                        /* map */
+                        var history = JSON.parse(order.history);
+                        history.forEach(function(item) {
+var html = `
+<div class="d-grid gap-2">
+                 
+                    <div class="d-flex align-items-center">
+              <small class="flex-shrink-0 mx-2">
+                         
+                          <span class="visually">${item.time}</span>
+                         
+                      </small>        <div class="flex-shrink-0">
+                        <span class="p-1 d-block bg-${item.status} rounded-circle">
+                          <span class="visually-hidden">New alerts</span>
+                        </span>
+                      </div>
+                      <div class="flex-grow-1 mx-2">
+                        <h5 class="mb-0 d-grid text-start">
+                          <span class="text-truncate w-100">${item.title}</span>
+                        </h5>
+                      </div>
+                      
+                    </div>
+                  
+                  
+                  
+                  
+                </div>
+                `;
+
+                        $('.timeline-widget').append(html);
+                        })
+                    } else {
+                        $('#bs-example-modal-md').modal('hide');
+                    }
+                },
+                error: function() {
+                    toastr.error('Lỗi hệ thống, vui lòng thử lại sau');
+                }
+            })
+
+        }
+        createDataTable('#history-order', '{{ route('user.order.action', ['social' => $service->service_social, 'action' => $service->slug]) }}', [{
+                data: 'id'
+            },
+            {
+                data: 'status_order',
+                render: function(data, type, row) {
+                    return data
+                }
+            },{
+                data: 'order_code',
+                render: function(data, type, row) {
+                    return `
+                        <div class="badge bg-light-primary text-primary fw-semibold">
+                            ${data}
+                        </div>
+                    `;
+                }
+        
+                
+            },
+            {
+                data: null,
+                render: function(data, type, row) {
+                    return `
+                                   <button class="btn btn-primary btn-sm me-1" title="Xem chi tiết" onclick="showModal('${row.id}')">
+                                  <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm me-1" title="Hủy đơn" onclick="orderRefund('${row.id}')">
+                                  <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-success btn-sm me-1" title="Bảo hành" onclick="orderWarranty('${row.id}')">
+                                  <i class="fas fa-check-square"></i>
+                                    </button>
+                       
+                    `;
+                }
+            },
+            {
+                data: 'user_id',
+                render: function(data, type, row) {
+                    return `
+                        <span class="text-warning fw-semibold">${data}</span>
+                    `;
+                }
+            },
+            
+            {
+                data: 'name',
+                render: function(data, type, row) {
+                    return `
+                        <span class="text-warning fw-semibold">${data}</span>
+                    `;
+                }
+            }, {
+                data: 'note',
+               
+            },
+            {
+                data: 'proxy',
+                render: function(data, type, row) {
+                    return `
+                        <span class="text-danger fw-semibold">${data}</span>
+                    `;
+                }
+            },
+            {
+                data: 'speed',
+                render: function(data, type, row) {
+                    return `
+                        <span class="text-danger fw-semibold">${data}</span>
+                    `;
+                }
+            },
+            {
+                data: null,
+                 
+                 
+            }, {
+                data: null,
+                render: function(data, type, row) {
+                    return JSON.parse(row.action).reaction
+                }
+            },{
+                data: 'timestart',
+                render: function(data, type, row) {
+                    return `
+                        <span class="text-danger fw-semibold">${data}</span>
+                    `;
+                }
+            },{
+                data: 'timebuy',
+                render: function(data, type, row) {
+                    return `
+                        <span class="text-success fw-semibold">${formatNumber(data)} ngày</span>
+                    `;
+                }
+            },
+            {
+                data: 'timeend',
+                render: function(data, type, row) {
+                    return `
+                        <span class="text-danger fw-semibold">${data}</span>
+                    `;
+                }
+            },
+            {
+                data: 'total_payment',
+                render: function(data, type, row) {
+                    return `
+                        <div class="alert bg-success text-white fw-semibold">
+                            ${formatNumber(data)} VNĐ
+                        </div>
+                    `;
+                }
+            },
+            {
+                data: 'username',
+                render: function(data, type, row) {
+                    return data
+                }
+            }
+        ])
+    </script>
+       <script>
+                            function xemsticker() {
+                                var sticker = $("#sticker").val(); //số stcker
+                                if (sticker == "off") {
+                                    Swal.fire("Thông Báo", "Vui Lòng Chọn Sticker Cần Xem Trước", "error");
+                                } else if (sticker > 35) {
+                                    Swal.fire("Thông Báo", "Sticker Không Hợp Lệ", "error");
+                                } else {
+                                    if (sticker == "1") {
+                                        var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/1.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/10.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/11.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/12.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/13.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/14.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/15.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/16.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/17.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/18.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/19.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/2.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/20.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/21.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/22.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/23.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/24.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/25.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/26.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/3.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/4.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/5.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/6.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/7.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/8.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/1/9.png" alt="">
+`; //thêm trong `` là nó tự xuống dòng
+                                    } else if (sticker == "2") {
+                                    var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/1.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/10.png.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/11.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/12.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/13.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/14.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/15.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/16.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/17.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/18.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/19.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/2.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/3.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/4.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/5.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/6.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/7.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/8.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/2/9.png" alt="">
+`;
+                                    } else if (sticker == "3") {
+                                        var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/1274311265999510.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/1274311285999508.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/1274311302666173.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/1274311315999505.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309624199683.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309637533015.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309670866345.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309680866344.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309697533009.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309704199675.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309714199674.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309727533006.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309740866338.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309754199670.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309760866336.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309784199667.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309790866333.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309800866332.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309827532996.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309834199662.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309844199661.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309850866327.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309864199659.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309870866325.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309880866324.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309890866323.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309904199655.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309920866320.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309937532985.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309944199651.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309957532983.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309967532982.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309984199647.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309990866313.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392309997532979.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392310007532978.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392310027532976.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392310037532975.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392310044199641.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/3/392310050866307.png" alt="">
+`;
+                                    } else if (sticker == "4") {
+                                        var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284662557578.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284672557577.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284682557576.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284689224242.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284705890907.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284712557573.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284719224239.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284725890905.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284732557571.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284739224237.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284749224236.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284765890901.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284772557567.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284779224233.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284785890899.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284792557565.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284802557564.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284809224230.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284815890896.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284822557562.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284829224228.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284849224226.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284855890892.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284865890891.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284872557557.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284879224223.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284885890889.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284892557555.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284899224221.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284905890887.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284912557553.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284929224218.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284939224217.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284945890883.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284952557549.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284959224215.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284965890881.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284972557547.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/575284979224213.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/4/577501519002559.png" alt="">
+`;
+                                    } else if (sticker == "5") {
+                                        var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148195815199737.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148195878533064.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148195891866396.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148195995199719.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148196045199714.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148196091866376.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148243935194925.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148794885139830.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148794898473162.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148798045139514.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148798091806176.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148798165139502.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148798191806166.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148798208472831.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148798255139493.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/5/1148801775139141.png" alt="">
+`;
+                                    } else if (sticker == "6") {
+                                        var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176745755681361.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176745769014693.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176745789014691.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176745985681338.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746002348003.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746015681335.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746029014667.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746042347999.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746069014663.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746082347995.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746095681327.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746112347992.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746125681324.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746145681322.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746165681320.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746179014652.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746192347984.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746209014649.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1176746239014646.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1177570312265572.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1180377555318181.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1184456651576938.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1184456791576924.png" alt="">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/6/1184461438243126.png" alt="">
+`;
+                                    } else if (sticker == "7") {
+                                        var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042523365246.png" alt="700042523365246.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042533365245.png" alt="700042533365245.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042543365244.png" alt="700042543365244.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042553365243.png" alt="700042553365243.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042563365242.png" alt="700042563365242.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042613365237.png" alt="700042613365237.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042633365235.png" alt="700042633365235.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042653365233.png" alt="700042653365233.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042663365232.png" alt="700042663365232.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042673365231.png" alt="700042673365231.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042683365230.png" alt="700042683365230.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042720031893.png" alt="700042720031893.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042730031892.png" alt="700042730031892.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042743365224.png" alt="700042743365224.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042756698556.png" alt="700042756698556.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042770031888.png" alt="700042770031888.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042780031887.png" alt="700042780031887.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042790031886.png" alt="700042790031886.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042823365216.png" alt="700042823365216.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042833365215.png" alt="700042833365215.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700042846698547.png" alt="700042846698547.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700158326686999.png" alt="700158326686999.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700158496686982.png" alt="700158496686982.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700158620020303.png" alt="700158620020303.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700158816686950.png" alt="700158816686950.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700159013353597.png" alt="700159013353597.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/7/700159896686842.png" alt="700159896686842.png">
+`;
+                                    } else if (sticker == "8") {
+                                        var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895543583882922.png" alt="895543583882922.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895543597216254.png" alt="895543597216254.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895543613882919.png" alt="895543613882919.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895543633882917.png" alt="895543633882917.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895543660549581.png" alt="895543660549581.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895543677216246.png" alt="895543677216246.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895543690549578.png" alt="895543690549578.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895543703882910.png" alt="895543703882910.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895544170549530.png" alt="895544170549530.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895544447216169.png" alt="895544447216169.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895544863882794.png" alt="895544863882794.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895544950549452.png" alt="895544950549452.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895545360549411.png" alt="895545360549411.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895545697216044.png" alt="895545697216044.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895546253882655.png" alt="895546253882655.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895546660549281.png" alt="895546660549281.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895547340549213.png" alt="895547340549213.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895547413882539.png" alt="895547413882539.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895547557215858.png" alt="895547557215858.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/8/895547660549181.png" alt="895547660549181.png">
+`;
+                                    } else if (sticker == "9") {
+                                        var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433358023716802.png" alt="433358023716802.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433358183716786.png" alt="433358183716786.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433358303716774.png" alt="433358303716774.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433373567048581.png" alt="433373567048581.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433373667048571.png" alt="433373667048571.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433373770381894.png" alt="433373770381894.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433373903715214.png" alt="433373903715214.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433374017048536.png" alt="433374017048536.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433374227048515.png" alt="433374227048515.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433374520381819.png" alt="433374520381819.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433374777048460.png" alt="433374777048460.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433375063715098.png" alt="433375063715098.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433375857048352.png" alt="433375857048352.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433376020381669.png" alt="433376020381669.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433376163714988.png" alt="433376163714988.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433376850381586.png" alt="433376850381586.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433376953714909.png" alt="433376953714909.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433377130381558.png" alt="433377130381558.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433392730379998.png" alt="433392730379998.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433392923713312.png" alt="433392923713312.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433393020379969.png" alt="433393020379969.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/433393113713293.png" alt="433393113713293.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/436288353423769.png" alt="436288353423769.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/9/446377229081548.png" alt="446377229081548.png">
+`;
+                                    } else if (sticker == "10") {
+                                        var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931162983629291.png" alt="931162983629291.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163003629289.png" alt="931163003629289.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163016962621.png" alt="931163016962621.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163030295953.png" alt="931163030295953.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163050295951.png" alt="931163050295951.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163090295947.png" alt="931163090295947.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163110295945.png" alt="931163110295945.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163123629277.png" alt="931163123629277.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163136962609.png" alt="931163136962609.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163150295941.png" alt="931163150295941.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163166962606.png" alt="931163166962606.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163180295938.png" alt="931163180295938.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163196962603.png" alt="931163196962603.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163210295935.png" alt="931163210295935.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163226962600.png" alt="931163226962600.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163243629265.png" alt="931163243629265.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163263629263.png" alt="931163263629263.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163276962595.png" alt="931163276962595.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931163310295925.png" alt="931163310295925.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/10/931499500262306.png" alt="931499500262306.png">
+`;
+                                    } else if (sticker == "11") {
+                                        var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1312149845515916.png" alt="1312149845515916.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1312150945515806.png" alt="1312150945515806.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1323164907747743.png" alt="1323164907747743.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335047436559490.png" alt="1335047436559490.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335101849887382.png" alt="1335101849887382.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335102989887268.png" alt="1335102989887268.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335108889886678.png" alt="1335108889886678.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335113096552924.png" alt="1335113096552924.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335146239882943.png" alt="1335146239882943.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335146963216204.png" alt="1335146963216204.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335147929882774.png" alt="1335147929882774.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335148443216056.png" alt="1335148443216056.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335149133215987.png" alt="1335149133215987.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335149833215917.png" alt="1335149833215917.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335150253215875.png" alt="1335150253215875.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335150939882473.png" alt="1335150939882473.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335151323215768.png" alt="1335151323215768.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1335151723215728.png" alt="1335151723215728.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1336126033118297.png" alt="1336126033118297.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/11/1336126399784927.png" alt="1336126399784927.png">
+`;
+                                    } else if (sticker == "12") {
+                                        var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244225959034556.png" alt="244225959034556.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244225985701220.png" alt="244225985701220.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244226049034547.png" alt="244226049034547.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244226095701209.png" alt="244226095701209.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244226189034533.png" alt="244226189034533.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244226272367858.png" alt="244226272367858.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244226552367830.png" alt="244226552367830.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244226615701157.png" alt="244226615701157.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244226655701153.png" alt="244226655701153.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244226729034479.png" alt="244226729034479.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244226792367806.png" alt="244226792367806.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244226879034464.png" alt="244226879034464.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244226995701119.png" alt="244226995701119.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244227122367773.png" alt="244227122367773.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244227155701103.png" alt="244227155701103.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/12/244227242367761.png" alt="244227242367761.png">
+`;
+                                    } else if (sticker == "13") {
+                                        var noteImg = `
+
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698962973549512.png" alt="698962973549512.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698962986882844.png" alt="698962986882844.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963003549509.png" alt="698963003549509.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963023549507.png" alt="698963023549507.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963040216172.png" alt="698963040216172.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963060216170.png" alt="698963060216170.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963076882835.png" alt="698963076882835.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963093549500.png" alt="698963093549500.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963113549498.png" alt="698963113549498.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963126882830.png" alt="698963126882830.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963146882828.png" alt="698963146882828.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963170216159.png" alt="698963170216159.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963190216157.png" alt="698963190216157.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963243549485.png" alt="698963243549485.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963263549483.png" alt="698963263549483.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963276882815.png" alt="698963276882815.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963290216147.png" alt="698963290216147.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963303549479.png" alt="698963303549479.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963320216144.png" alt="698963320216144.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963333549476.png" alt="698963333549476.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963346882808.png" alt="698963346882808.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963393549470.png" alt="698963393549470.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963406882802.png" alt="698963406882802.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/13/698963423549467.png" alt="698963423549467.png">
+`;
+                                    } else if (sticker == "14") {
+                                        var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/114314139163194.png" alt="114314139163194.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/114314322496509.png" alt="114314322496509.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/114314462496495.png" alt="114314462496495.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/114314595829815.png" alt="114314595829815.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/114314699163138.png" alt="114314699163138.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/114314779163130.png" alt="114314779163130.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/114314905829784.png" alt="114314905829784.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/114314999163108.png" alt="114314999163108.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/114316152496326.png" alt="114316152496326.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/114316262496315.png" alt="114316262496315.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/125483208046287.png" alt="125483208046287.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/125485488046059.png" alt="125485488046059.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/131714824089792.png" alt="131714824089792.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/131715044089770.png" alt="131715044089770.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/131715190756422.png" alt="131715190756422.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/131715304089744.png" alt="131715304089744.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/131715457423062.png" alt="131715457423062.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/131715684089706.png" alt="131715684089706.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/131715900756351.png" alt="131715900756351.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/14/131716057423002.png" alt="131716057423002.png">
+`;
+                                    } else if (sticker == "15") {
+                                        var noteImg = `
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698888380326341.png" alt="1698888380326341.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698890610326118.png" alt="1698890610326118.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698890786992767.png" alt="1698890786992767.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698890866992759.png" alt="1698890866992759.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698891320326047.png" alt="1698891320326047.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698891420326037.png" alt="1698891420326037.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698892576992588.png" alt="1698892576992588.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698892746992571.png" alt="1698892746992571.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698892856992560.png" alt="1698892856992560.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698895540325625.png" alt="1698895540325625.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698896926992153.png" alt="1698896926992153.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698897000325479.png" alt="1698897000325479.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698897090325470.png" alt="1698897090325470.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698897143658798.png" alt="1698897143658798.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1698897283658784.png" alt="1698897283658784.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/15/1706957589519420.png" alt="1706957589519420.png">
+`;
+                                    } else if (sticker == "16") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618520069737.png" alt="302618520069737.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618536736402.png" alt="302618536736402.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618550069734.png" alt="302618550069734.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618563403066.png" alt="302618563403066.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618580069731.png" alt="302618580069731.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618593403063.png" alt="302618593403063.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618613403061.png" alt="302618613403061.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618630069726.png" alt="302618630069726.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618643403058.png" alt="302618643403058.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618656736390.png" alt="302618656736390.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618670069722.png" alt="302618670069722.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618683403054.png" alt="302618683403054.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618696736386.png" alt="302618696736386.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618710069718.png" alt="302618710069718.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618723403050.png" alt="302618723403050.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618736736382.png" alt="302618736736382.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618756736380.png" alt="302618756736380.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618770069712.png" alt="302618770069712.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618783403044.png" alt="302618783403044.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/16/302618800069709.png" alt="302618800069709.png">
+</div>
+`;
+                                    } else if (sticker == "17") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356530744548.png" alt="460356530744548.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356574077877.png" alt="460356574077877.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356587411209.png" alt="460356587411209.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356597411208.png" alt="460356597411208.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356610744540.png" alt="460356610744540.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356620744539.png" alt="460356620744539.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356630744538.png" alt="460356630744538.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356644077870.png" alt="460356644077870.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356664077868.png" alt="460356664077868.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356677411200.png" alt="460356677411200.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356690744532.png" alt="460356690744532.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356700744531.png" alt="460356700744531.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356717411196.png" alt="460356717411196.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356734077861.png" alt="460356734077861.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356747411193.png" alt="460356747411193.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356767411191.png" alt="460356767411191.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356780744523.png" alt="460356780744523.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356797411188.png" alt="460356797411188.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356817411186.png" alt="460356817411186.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356830744518.png" alt="460356830744518.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356844077850.png" alt="460356844077850.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356857411182.png" alt="460356857411182.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356870744514.png" alt="460356870744514.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356884077846.png" alt="460356884077846.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356914077843.png" alt="460356914077843.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356927411175.png" alt="460356927411175.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356947411173.png" alt="460356947411173.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356957411172.png" alt="460356957411172.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/17/460356967411171.png" alt="460356967411171.png">
+</div>
+`;
+                                    } else if (sticker == "18") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020538050679.png" alt="523020538050679.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020551384011.png" alt="523020551384011.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020564717343.png" alt="523020564717343.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020578050675.png" alt="523020578050675.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020591384007.png" alt="523020591384007.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020604717339.png" alt="523020604717339.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020618050671.png" alt="523020618050671.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020631384003.png" alt="523020631384003.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020644717335.png" alt="523020644717335.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020661384000.png" alt="523020661384000.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020674717332.png" alt="523020674717332.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020688050664.png" alt="523020688050664.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020701383996.png" alt="523020701383996.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020714717328.png" alt="523020714717328.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020728050660.png" alt="523020728050660.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020741383992.png" alt="523020741383992.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020761383990.png" alt="523020761383990.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020778050655.png" alt="523020778050655.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020794717320.png" alt="523020794717320.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/18/523020814717318.png" alt="523020814717318.png">
+</div>
+`;
+                                    } else if (sticker == "19") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180275296210.png" alt="648180275296210.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180291962875.png" alt="648180291962875.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180301962874.png" alt="648180301962874.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180311962873.png" alt="648180311962873.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180321962872.png" alt="648180321962872.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180335296204.png" alt="648180335296204.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180351962869.png" alt="648180351962869.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180361962868.png" alt="648180361962868.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180378629533.png" alt="648180378629533.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180388629532.png" alt="648180388629532.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180398629531.png" alt="648180398629531.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180408629530.png" alt="648180408629530.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180428629528.png" alt="648180428629528.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180441962860.png" alt="648180441962860.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648180451962859.png" alt="648180451962859.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/19/648201185294119.png" alt="648201185294119.png">
+</div>
+`;
+                                    } else if (sticker == "20") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290238148070552.png" alt="290238148070552.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290239004737133.png" alt="290239004737133.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290253918068975.png" alt="290253918068975.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290254088068958.png" alt="290254088068958.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290254204735613.png" alt="290254204735613.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290254308068936.png" alt="290254308068936.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290254771402223.png" alt="290254771402223.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290254881402212.png" alt="290254881402212.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290254988068868.png" alt="290254988068868.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290255054735528.png" alt="290255054735528.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290255108068856.png" alt="290255108068856.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290255328068834.png" alt="290255328068834.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290255724735461.png" alt="290255724735461.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290255901402110.png" alt="290255901402110.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290256091402091.png" alt="290256091402091.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290256218068745.png" alt="290256218068745.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290256328068734.png" alt="290256328068734.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290256418068725.png" alt="290256418068725.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290256588068708.png" alt="290256588068708.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/20/290256648068702.png" alt="290256648068702.png">
+</div>
+`;
+                                    } else if (sticker == "21") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317131749921.png" alt="320317131749921.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317145083253.png" alt="320317145083253.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317158416585.png" alt="320317158416585.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317175083250.png" alt="320317175083250.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317188416582.png" alt="320317188416582.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317201749914.png" alt="320317201749914.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317221749912.png" alt="320317221749912.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317235083244.png" alt="320317235083244.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317248416576.png" alt="320317248416576.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317261749908.png" alt="320317261749908.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317275083240.png" alt="320317275083240.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317288416572.png" alt="320317288416572.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317305083237.png" alt="320317305083237.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317318416569.png" alt="320317318416569.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317331749901.png" alt="320317331749901.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/21/320317345083233.png" alt="320317345083233.png">
+</div>
+`;
+                                    } else if (sticker == "22") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628020937324609.png" alt="628020937324609.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628020950657941.png" alt="628020950657941.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628020963991273.png" alt="628020963991273.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628020980657938.png" alt="628020980657938.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628020993991270.png" alt="628020993991270.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021007324602.png" alt="628021007324602.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021027324600.png" alt="628021027324600.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021040657932.png" alt="628021040657932.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021053991264.png" alt="628021053991264.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021070657929.png" alt="628021070657929.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021083991261.png" alt="628021083991261.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021097324593.png" alt="628021097324593.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021110657925.png" alt="628021110657925.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021130657923.png" alt="628021130657923.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021147324588.png" alt="628021147324588.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021160657920.png" alt="628021160657920.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021173991252.png" alt="628021173991252.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021187324584.png" alt="628021187324584.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021203991249.png" alt="628021203991249.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021220657914.png" alt="628021220657914.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021237324579.png" alt="628021237324579.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021250657911.png" alt="628021250657911.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021267324576.png" alt="628021267324576.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/22/628021280657908.png" alt="628021280657908.png">
+</div>
+`;
+                                    } else if (sticker == "23") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562610551175.png" alt="595562610551175.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562617217841.png" alt="595562617217841.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562623884507.png" alt="595562623884507.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562630551173.png" alt="595562630551173.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562643884505.png" alt="595562643884505.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562650551171.png" alt="595562650551171.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562657217837.png" alt="595562657217837.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562663884503.png" alt="595562663884503.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562670551169.png" alt="595562670551169.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562677217835.png" alt="595562677217835.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562683884501.png" alt="595562683884501.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562690551167.png" alt="595562690551167.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562697217833.png" alt="595562697217833.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562703884499.png" alt="595562703884499.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562710551165.png" alt="595562710551165.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562717217831.png" alt="595562717217831.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562723884497.png" alt="595562723884497.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562730551163.png" alt="595562730551163.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562737217829.png" alt="595562737217829.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562743884495.png" alt="595562743884495.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562750551161.png" alt="595562750551161.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562757217827.png" alt="595562757217827.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562763884493.png" alt="595562763884493.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562770551159.png" alt="595562770551159.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562777217825.png" alt="595562777217825.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562783884491.png" alt="595562783884491.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562790551157.png" alt="595562790551157.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562797217823.png" alt="595562797217823.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562803884489.png" alt="595562803884489.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562810551155.png" alt="595562810551155.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562817217821.png" alt="595562817217821.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562823884487.png" alt="595562823884487.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562830551153.png" alt="595562830551153.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562837217819.png" alt="595562837217819.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562843884485.png" alt="595562843884485.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/23/595562850551151.png" alt="595562850551151.png">
+</div>
+`;
+                                    } else if (sticker == "24") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753213008173.png" alt="1905753213008173.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753229674838.png" alt="1905753229674838.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753249674836.png" alt="1905753249674836.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753269674834.png" alt="1905753269674834.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753299674831.png" alt="1905753299674831.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753336341494.png" alt="1905753336341494.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753353008159.png" alt="1905753353008159.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753373008157.png" alt="1905753373008157.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753389674822.png" alt="1905753389674822.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753446341483.png" alt="1905753446341483.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753553008139.png" alt="1905753553008139.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753633008131.png" alt="1905753633008131.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753696341458.png" alt="1905753696341458.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753713008123.png" alt="1905753713008123.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753726341455.png" alt="1905753726341455.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753746341453.png" alt="1905753746341453.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753776341450.png" alt="1905753776341450.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905753819674779.png" alt="1905753819674779.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1905766536340174.png" alt="1905766536340174.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/24/1907302886186539.png" alt="1907302886186539.png">
+</div>
+`;
+                                    } else if (sticker == "25") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/642556785927684.png" alt="642556785927684.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/642557725927590.png" alt="642557725927590.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/642557822594247.png" alt="642557822594247.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/642558482594181.png" alt="642558482594181.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/642558662594163.png" alt="642558662594163.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/642558995927463.png" alt="642558995927463.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/642559102594119.png" alt="642559102594119.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/642559505927412.png" alt="642559505927412.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/655725834610779.png" alt="655725834610779.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/655726134610749.png" alt="655726134610749.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/655726334610729.png" alt="655726334610729.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/655726594610703.png" alt="655726594610703.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/655726757944020.png" alt="655726757944020.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/655726907944005.png" alt="655726907944005.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/655727194610643.png" alt="655727194610643.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/655727861277243.png" alt="655727861277243.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/655727994610563.png" alt="655727994610563.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/655728254610537.png" alt="655728254610537.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/655728487943847.png" alt="655728487943847.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/25/693485000834862.png" alt="693485000834862.png">
+</div>
+`;
+                                    } else if (sticker == "26") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302629199866051.png" alt="1302629199866051.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302629826532655.png" alt="1302629826532655.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302630649865906.png" alt="1302630649865906.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302631499865821.png" alt="1302631499865821.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302631776532460.png" alt="1302631776532460.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302632663199038.png" alt="1302632663199038.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302633656532272.png" alt="1302633656532272.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302634093198895.png" alt="1302634093198895.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302634706532167.png" alt="1302634706532167.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302635016532136.png" alt="1302635016532136.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302635356532102.png" alt="1302635356532102.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302635756532062.png" alt="1302635756532062.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302636003198704.png" alt="1302636003198704.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302636279865343.png" alt="1302636279865343.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302636786531959.png" alt="1302636786531959.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302639676531670.png" alt="1302639676531670.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302642226531415.png" alt="1302642226531415.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302643773197927.png" alt="1302643773197927.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302645076531130.png" alt="1302645076531130.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/26/1302645766531061.png" alt="1302645766531061.png">
+</div>
+`;
+                                    } else if (sticker == "27") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575102566325.png" alt="209575102566325.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575109232991.png" alt="209575109232991.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575115899657.png" alt="209575115899657.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575122566323.png" alt="209575122566323.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575129232989.png" alt="209575129232989.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575135899655.png" alt="209575135899655.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575142566321.png" alt="209575142566321.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575149232987.png" alt="209575149232987.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575155899653.png" alt="209575155899653.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575162566319.png" alt="209575162566319.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575172566318.png" alt="209575172566318.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575179232984.png" alt="209575179232984.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575185899650.png" alt="209575185899650.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575192566316.png" alt="209575192566316.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575199232982.png" alt="209575199232982.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575205899648.png" alt="209575205899648.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575212566314.png" alt="209575212566314.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575219232980.png" alt="209575219232980.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575225899646.png" alt="209575225899646.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575232566312.png" alt="209575232566312.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575239232978.png" alt="209575239232978.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575245899644.png" alt="209575245899644.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575252566310.png" alt="209575252566310.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575259232976.png" alt="209575259232976.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575272566308.png" alt="209575272566308.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575279232974.png" alt="209575279232974.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575285899640.png" alt="209575285899640.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575292566306.png" alt="209575292566306.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575299232972.png" alt="209575299232972.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575309232971.png" alt="209575309232971.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575319232970.png" alt="209575319232970.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575325899636.png" alt="209575325899636.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575332566302.png" alt="209575332566302.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575339232968.png" alt="209575339232968.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575345899634.png" alt="209575345899634.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575352566300.png" alt="209575352566300.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575359232966.png" alt="209575359232966.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575365899632.png" alt="209575365899632.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575372566298.png" alt="209575372566298.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575379232964.png" alt="209575379232964.png">
+ <img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575385899630.png" alt="209575385899630.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575392566296.png" alt="209575392566296.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575399232962.png" alt="209575399232962.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/27/209575405899628.png" alt="209575405899628.png">
+</div>
+`;
+                                    } else if (sticker == "28") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788026751817.png" alt="167788026751817.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788033418483.png" alt="167788033418483.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788040085149.png" alt="167788040085149.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788046751815.png" alt="167788046751815.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788053418481.png" alt="167788053418481.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788060085147.png" alt="167788060085147.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788066751813.png" alt="167788066751813.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788073418479.png" alt="167788073418479.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788080085145.png" alt="167788080085145.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788086751811.png" alt="167788086751811.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788093418477.png" alt="167788093418477.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788100085143.png" alt="167788100085143.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788110085142.png" alt="167788110085142.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788116751808.png" alt="167788116751808.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788123418474.png" alt="167788123418474.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788130085140.png" alt="167788130085140.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788136751806.png" alt="167788136751806.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788143418472.png" alt="167788143418472.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788150085138.png" alt="167788150085138.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788156751804.png" alt="167788156751804.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788163418470.png" alt="167788163418470.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788170085136.png" alt="167788170085136.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788176751802.png" alt="167788176751802.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788183418468.png" alt="167788183418468.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788190085134.png" alt="167788190085134.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788196751800.png" alt="167788196751800.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788203418466.png" alt="167788203418466.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788216751798.png" alt="167788216751798.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788223418464.png" alt="167788223418464.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788230085130.png" alt="167788230085130.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788236751796.png" alt="167788236751796.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788243418462.png" alt="167788243418462.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788250085128.png" alt="167788250085128.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788256751794.png" alt="167788256751794.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788263418460.png" alt="167788263418460.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788270085126.png" alt="167788270085126.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788276751792.png" alt="167788276751792.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788283418458.png" alt="167788283418458.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788290085124.png" alt="167788290085124.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788296751790.png" alt="167788296751790.png">
+ <img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788303418456.png" alt="167788303418456.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788313418455.png" alt="167788313418455.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/28/167788323418454.png" alt="167788323418454.png">
+</div>
+`;
+                                    } else if (sticker == "29") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510424095972980.png" alt="510424095972980.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510424365972953.png" alt="510424365972953.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510424512639605.png" alt="510424512639605.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510424609306262.png" alt="510424609306262.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510424775972912.png" alt="510424775972912.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510424859306237.png" alt="510424859306237.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510424952639561.png" alt="510424952639561.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510425122639544.png" alt="510425122639544.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510425219306201.png" alt="510425219306201.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510425332639523.png" alt="510425332639523.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510427319305991.png" alt="510427319305991.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510428082639248.png" alt="510428082639248.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510428225972567.png" alt="510428225972567.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510428362639220.png" alt="510428362639220.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510428465972543.png" alt="510428465972543.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510428549305868.png" alt="510428549305868.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510428639305859.png" alt="510428639305859.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510428739305849.png" alt="510428739305849.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510428949305828.png" alt="510428949305828.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/29/510429085972481.png" alt="510429085972481.png">
+</div>
+`;
+                                    } else if (sticker == "30") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405648808660.png" alt="213405648808660.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405655475326.png" alt="213405655475326.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405665475325.png" alt="213405665475325.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405672141991.png" alt="213405672141991.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405678808657.png" alt="213405678808657.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405685475323.png" alt="213405685475323.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405692141989.png" alt="213405692141989.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405722141986.png" alt="213405722141986.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405732141985.png" alt="213405732141985.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405738808651.png" alt="213405738808651.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405745475317.png" alt="213405745475317.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405758808649.png" alt="213405758808649.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405765475315.png" alt="213405765475315.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405782141980.png" alt="213405782141980.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405805475311.png" alt="213405805475311.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405812141977.png" alt="213405812141977.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405818808643.png" alt="213405818808643.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405825475309.png" alt="213405825475309.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405832141975.png" alt="213405832141975.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405838808641.png" alt="213405838808641.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405852141973.png" alt="213405852141973.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405858808639.png" alt="213405858808639.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405888808636.png" alt="213405888808636.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405895475302.png" alt="213405895475302.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405902141968.png" alt="213405902141968.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213405912141967.png" alt="213405912141967.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213419185473973.png" alt="213419185473973.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213419212140637.png" alt="213419212140637.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213419225473969.png" alt="213419225473969.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213419238807301.png" alt="213419238807301.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213419275473964.png" alt="213419275473964.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213419298807295.png" alt="213419298807295.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/213723112110247.png" alt="213723112110247.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/216114208537804.png" alt="216114208537804.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/216114215204470.png" alt="216114215204470.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/216114221871136.png" alt="216114221871136.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/30/216114231871135.png" alt="216114231871135.png">
+</div>
+`;
+                                    } else if (sticker == "31") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445624712303387.png" alt="445624712303387.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445624955636696.png" alt="445624955636696.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445625352303323.png" alt="445625352303323.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445625475636644.png" alt="445625475636644.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445625728969952.png" alt="445625728969952.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445625775636614.png" alt="445625775636614.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445625802303278.png" alt="445625802303278.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445625948969930.png" alt="445625948969930.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445626158969909.png" alt="445626158969909.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445626428969882.png" alt="445626428969882.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445626702303188.png" alt="445626702303188.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445626762303182.png" alt="445626762303182.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445626882303170.png" alt="445626882303170.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445626938969831.png" alt="445626938969831.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445627038969821.png" alt="445627038969821.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445627118969813.png" alt="445627118969813.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445627145636477.png" alt="445627145636477.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445627382303120.png" alt="445627382303120.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445627502303108.png" alt="445627502303108.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/31/445627538969771.png" alt="445627538969771.png">
+</div>
+`;
+                                    } else if (sticker == "32") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1493790767614920.png" alt="1493790767614920.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1493790930948237.png" alt="1493790930948237.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1493791024281561.png" alt="1493791024281561.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1493791520948178.png" alt="1493791520948178.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1493791780948152.png" alt="1493791780948152.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1493792130948117.png" alt="1493792130948117.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1493792220948108.png" alt="1493792220948108.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1494257197568277.png" alt="1494257197568277.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1494257387568258.png" alt="1494257387568258.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1495814754079188.png" alt="1495814754079188.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1495814827412514.png" alt="1495814827412514.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1495966584064005.png" alt="1495966584064005.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1496147837379213.png" alt="1496147837379213.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1496219837372013.png" alt="1496219837372013.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1496578160669514.png" alt="1496578160669514.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/32/1496578364002827.png" alt="1496578364002827.png">
+</div>
+`;
+                                    } else if (sticker == "33") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400736649638.png" alt="168400736649638.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400749982970.png" alt="168400749982970.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400759982969.png" alt="168400759982969.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400773316301.png" alt="168400773316301.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400786649633.png" alt="168400786649633.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400793316299.png" alt="168400793316299.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400806649631.png" alt="168400806649631.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400816649630.png" alt="168400816649630.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400823316296.png" alt="168400823316296.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400833316295.png" alt="168400833316295.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400839982961.png" alt="168400839982961.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400849982960.png" alt="168400849982960.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400859982959.png" alt="168400859982959.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400869982958.png" alt="168400869982958.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400876649624.png" alt="168400876649624.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400899982955.png" alt="168400899982955.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400926649619.png" alt="168400926649619.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400943316284.png" alt="168400943316284.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400953316283.png" alt="168400953316283.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400963316282.png" alt="168400963316282.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400969982948.png" alt="168400969982948.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400979982947.png" alt="168400979982947.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168400989982946.png" alt="168400989982946.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168401003316278.png" alt="168401003316278.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168401016649610.png" alt="168401016649610.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168401029982942.png" alt="168401029982942.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168401036649608.png" alt="168401036649608.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168401046649607.png" alt="168401046649607.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168401073316271.png" alt="168401073316271.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168401079982937.png" alt="168401079982937.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168401093316269.png" alt="168401093316269.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168401099982935.png" alt="168401099982935.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168401109982934.png" alt="168401109982934.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168401119982933.png" alt="168401119982933.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168401129982932.png" alt="168401129982932.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/33/168401143316264.png" alt="168401143316264.png">
+</div>
+`;
+                                    } else if (sticker == "34") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1045328705551379.png" alt="1045328705551379.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1045328805551369.png" alt="1045328805551369.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1045329588884624.png" alt="1045329588884624.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1045330828884500.png" alt="1045330828884500.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1045330988884484.png" alt="1045330988884484.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1045331105551139.png" alt="1045331105551139.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1045333105550939.png" alt="1045333105550939.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1045333445550905.png" alt="1045333445550905.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1049955045088745.png" alt="1049955045088745.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1049958808421702.png" alt="1049958808421702.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1049958965088353.png" alt="1049958965088353.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1049959055088344.png" alt="1049959055088344.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1049960538421529.png" alt="1049960538421529.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1049962238421359.png" alt="1049962238421359.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1049962475088002.png" alt="1049962475088002.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/34/1051264558291127.png" alt="1051264558291127.png">
+</div>
+`;
+                                    } else if (sticker == "35") {
+                                        var noteImg = `
+<div class="modal-body" style="text-align:center">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818810588146450.png" alt="818810588146450.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818810798146429.png" alt="818810798146429.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818811264813049.png" alt="818811264813049.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818811991479643.png" alt="818811991479643.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818812081479634.png" alt="818812081479634.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818814481479394.png" alt="818814481479394.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818814574812718.png" alt="818814574812718.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818814664812709.png" alt="818814664812709.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818814811479361.png" alt="818814811479361.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818819164812259.png" alt="818819164812259.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818819784812197.png" alt="818819784812197.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818820021478840.png" alt="818820021478840.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818820081478834.png" alt="818820081478834.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818820221478820.png" alt="818820221478820.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818820401478802.png" alt="818820401478802.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818820521478790.png" alt="818820521478790.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821561478686.png" alt="818821561478686.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821571478685.png" alt="818821571478685.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821581478684.png" alt="818821581478684.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821588145350.png" alt="818821588145350.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821594812016.png" alt="818821594812016.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821601478682.png" alt="818821601478682.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821608145348.png" alt="818821608145348.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821618145347.png" alt="818821618145347.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821624812013.png" alt="818821624812013.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821631478679.png" alt="818821631478679.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821641478678.png" alt="818821641478678.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821648145344.png" alt="818821648145344.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821654812010.png" alt="818821654812010.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821661478676.png" alt="818821661478676.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821668145342.png" alt="818821668145342.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821674812008.png" alt="818821674812008.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821688145340.png" alt="818821688145340.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821694812006.png" alt="818821694812006.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821704812005.png" alt="818821704812005.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821714812004.png" alt="818821714812004.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821721478670.png" alt="818821721478670.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821728145336.png" alt="818821728145336.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821734812002.png" alt="818821734812002.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821741478668.png" alt="818821741478668.png">
+ <img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821748145334.png" alt="818821748145334.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821754812000.png" alt="818821754812000.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821761478666.png" alt="818821761478666.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821768145332.png" alt="818821768145332.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821774811998.png" alt="818821774811998.png">
+<img style="width: 100px" class="img-thumbnail img-responsive" src="https://trum.vip/public/sticker/35/818821781478664.png" alt="818821781478664.png">
+</div>
+`;
+                                    } else {
+                                        Swal.fire("Thông Báo", "Sticker Không Hợp Lệ", "error");
+                                    }
+                                    $("#imgSticker").html(noteImg);
+                                    $('#list_sticker').modal('show');
+                                }
+                            }
+                            function hienImages() {
+        var images = $('select[name=images]').val();
+        if (images == "link") {
+            document.getElementById("image_link_area").style = '';
+        } else if (images == "auto") {
+            document.getElementById("image_auto_custom_text").style = '';
+        } else {
+            document.getElementById("image_auto_custom_text").style.display = 'none';
+            document.getElementById("image_link_area").style.display = 'none';
+        }
+    }
+
+    function hienImages1() {
+        var images = $('select[name=images]').val();
+        if (images == "auto") {
+            document.getElementById("image_auto_area").style = '';
+        } else {
+            document.getElementById("image_auto_area").style.display = 'none';
+        }
+    }
+    swal1('Vui lòng đọc kĩ các chú ý dịch vụ trước khi lên đơn!');
+                        </script>
+                            <script>
+    $(document).ready(function() {
+              Swal.fire({
+                  title: 'Thông báo',
+                  text: 'Vui lòng đọc kĩ các chú ý dịch vụ trước khi lên đơn!',
+                  icon: '',
+                  confirmButtonText: 'Tôi Đã Hiểu'
+              })
+          });
+      </script>
+@endsection
