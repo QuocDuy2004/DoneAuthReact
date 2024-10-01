@@ -57,4 +57,8 @@ Route::prefix('/tool')->group(function(){
 
 Route::post('/auth/register', [AuthClientController::class, 'Register'])->name('register.post');
 Route::post('/auth/login', [AuthClientController::class, 'Login'])->name('login.post');
+Route::post('/auth/logout', [AuthClientController::class, 'Logout'])->name('logout.post');
+
 Route::post('/auth/forgot-password', [AuthClientController::class, 'ForgotPassword'])->name('forgot.post');
+Route::post('/reset-password/{token}', [AuthClientController::class, 'ResetPassword'])->name('reset.password.post');
+Route::get('/reset-password/{token}', [AuthClientController::class, 'ResetPasswordPage'])->name('reset.password');  

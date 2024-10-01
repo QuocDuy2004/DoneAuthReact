@@ -16,6 +16,8 @@ class VerifyCsrfToken extends Middleware
         'api/auth/register',
         'api/auth/login',
         'api/auth/forgot-password',
+        'api/auth/reset-password/*',
+        'api/auth/logout',
         '/callback/telegram/v1'
     ];
 }

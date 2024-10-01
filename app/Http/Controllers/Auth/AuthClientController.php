@@ -23,7 +23,6 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\MailForgotPassword;
 use App\Models\LinkClick;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Facades\DB;
 
 class AuthClientController extends Controller
 {
@@ -42,30 +41,30 @@ class AuthClientController extends Controller
         return view('auth.register');
     }
     public function RegisterPageWithReferral($referral_code)
-    {
-        $referrer = User::where('referral_code', $referral_code)->first();
+{
+    $referrer = User::where('referral_code', $referral_code)->first();
 
-        if ($referrer) {
-            // Cập nhật lượt truy cập cho người giới thiệu
-            $referrer->clicks_count += 1;
-            $referrer->save();
+    if ($referrer) {
+        // Cập nhật lượt truy cập cho người giới thiệu
+        $referrer->clicks_count += 1;
+        $referrer->save();
+        
+        // Hoặc lưu vào bảng link_clicks
+        LinkClick::create([
+            'user_id' => $referrer->id,
+            'referral_code' => $referral_code,
+        ]);
 
-            // Hoặc lưu vào bảng link_clicks
-            LinkClick::create([
-                'user_id' => $referrer->id,
-                'referral_code' => $referral_code,
-            ]);
-
-            // Lưu mã giới thiệu vào session
-            Session::put('ref', $referrer->username);
-        } else {
-            // Nếu không tìm thấy người giới thiệu, xóa session ref
-            Session::forget('ref');
-        }
-
-        // Chuyển hướng đến trang đăng ký
-        return redirect()->route('register');
+        // Lưu mã giới thiệu vào session
+        Session::put('ref', $referrer->username);
+    } else {
+        // Nếu không tìm thấy người giới thiệu, xóa session ref
+        Session::forget('ref');
     }
+
+    // Chuyển hướng đến trang đăng ký
+    return redirect()->route('register');
+}
 
 
     public function ForgotPasswordPage()
@@ -129,51 +128,36 @@ class AuthClientController extends Controller
 
     public function ForgotPassword(Request $request)
 {
-    // Validate the email input
     $valid = Validator::make($request->all(), [
         'email' => 'required|string|email|max:255',
     ]);
 
-    // Return validation errors as JSON if validation fails
     if ($valid->fails()) {
         return response()->json([
-            'message' => 'Dữ liệu không hợp lệ',
-            'errors' => $valid->errors()
-        ], 422); // Unprocessable Entity
+            'errors' => $valid->errors(),
+        ], 422);
     }
 
-    // Find the user by email and domain
-    $user = User::where('email', $request->email)
-                ->where('domain', getDomain())
-                ->first();
-
-    // If user exists
+    $user = User::where('email', $request->email)->where('domain', getDomain())->first();
     if ($user) {
-        // Generate a password reset token
         $token = Str::random(60);
-        $token = Hash::make($token); // Mã hóa token để tăng cường bảo mật
-
-        // Create or update password reset request
-        PasswordReset::updateOrCreate(
-            ['email' => $request->email, 'domain' => getDomain()],
-            ['token' => $token]
-        );
-
-        // Send the password reset email
+        $check = PasswordReset::where('email', $request->email)->where('domain', getDomain())->first();
+        if ($check) {
+            $check->update(['token' => $token]);
+        } else {
+            PasswordReset::create([
+                'email' => $request->email,
+                'token' => $token,
+                'domain' => getDomain()
+            ]);
+        }
         Mail::to($request->email)->send(new MailForgotPassword(route('reset.password', $token)));
 
-        // Return success response
-        return response()->json([
-            'message' => 'Vui lòng kiểm tra email để lấy lại mật khẩu'
-        ], 200); // OK
+        return response()->json(['message' => 'Vui lòng kiểm tra email để lấy lại mật khẩu'], 200);
+    } else {
+        return response()->json(['message' => 'Email không tồn tại'], 404);
     }
-
-    // Return generic message to avoid revealing whether the email exists
-    return response()->json([
-        'message' => 'Khôi phục thành công. Vui lòng kiểm tra Email'
-    ], 200); // OK, không tiết lộ thông tin người dùng
 }
-
 
 
     public function ResetPasswordPage($token)
@@ -187,32 +171,46 @@ class AuthClientController extends Controller
     }
 
     public function ResetPassword($token, Request $request)
-    {
-        $token = PasswordReset::where('token', $token)->where('domain', getDomain())->first();
-        if ($token) {
-            $valid = Validator::make($request->all(), [
-                'password' => 'required|string|min:8|confirmed',
-                'password_confirmation' => 'required|string|min:8|same:password',
-            ]);
+{
+    // Tìm mã thông báo
+    $passwordReset = PasswordReset::where('token', $token)
+                                  ->where('domain', getDomain())
+                                  ->first();
+    
+    // Nếu không tìm thấy mã thông báo, chuyển hướng với thông báo lỗi
+    if (!$passwordReset) {
+        return redirect()->route('forgot.password')->with('error', 'Token không hợp lệ hoặc đã hết hạn');
+    }
 
-            if ($valid->fails()) {
-                return redirect()->back()->withErrors($valid)->withInput();
-            } else {
-                $user = User::where('email', $token->email)->where('domain', getDomain())->first();
-                if ($user) {
-                    $user->update([
-                        'password' => Hash::make($request->password)
-                    ]);
-                    $token->delete();
-                    return redirect()->route('login')->with('success', 'Đổi mật khẩu thành công');
-                } else {
-                    return redirect()->route('forgot.password')->with('error', 'Email không tồn tại');
-                }
-            }
-        } else {
-            return redirect()->route('forgot.password')->with('error', 'Token không hợp lệ');
-        }
-    } 
+    // Xác thực mật khẩu
+    $valid = Validator::make($request->all(), [
+        'password' => 'required|string|min:8|confirmed',
+    ]);
+
+    // Nếu xác thực thất bại, trả về trang trước với thông báo lỗi
+    if ($valid->fails()) {
+        return redirect()->back()->withErrors($valid)->withInput();
+    }
+
+    // Tìm người dùng và cập nhật mật khẩu
+    $user = User::where('email', $passwordReset->email)->first();
+    
+    if (!$user) {
+        return redirect()->route('forgot.password')->with('error', 'Không tìm thấy người dùng với email này');
+    }
+
+    // Cập nhật mật khẩu
+    $user->update([
+        'password' => Hash::make($request->password),
+    ]);
+
+    // Xóa token sau khi đổi mật khẩu thành công
+    $passwordReset->delete();
+
+    // Chuyển hướng đến trang đăng nhập với thông báo thành công
+    return redirect()->route('login')->with('success', 'Đổi mật khẩu thành công.');
+}
+
 
     public function Login(Request $request)
 {
@@ -241,7 +239,8 @@ class AuthClientController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Đăng nhập thành công, xin chào ' . $request->username,
-                'user' => $user, // Trả về thông tin người dùng nếu cần
+                'user' => $user, // Trả về thông tin người dùng
+                'api_token' => $user->api_token, // Trả về api_token
             ], 200);
         } else {
             // Mật khẩu không khớp
@@ -259,7 +258,6 @@ class AuthClientController extends Controller
     }
 }
 
-    
     public function RefPage($id)
     {
         $user = User::where('id', $id)->where('domain', getDomain())->first();
@@ -335,12 +333,13 @@ class AuthClientController extends Controller
         return response()->json(['message' => 'Đăng ký tài khoản thành công', 'user' => $newUser], 201);
     }
     
+    
 
     public function Logout()
     {
         Session::flush();
         Auth::logout(Auth::user());
-        return redirect()->route('login')->with('success', 'Đăng xuất tài khoản thành công');
+        return redirect()->route('login')->with('success', 'Đăng xuất thành công');
     }
     public function RefCountPage($id)
     {
@@ -360,111 +359,126 @@ class AuthClientController extends Controller
 
     public function Install(Request $request)
     {
-        $rules = [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'username' => 'required|string|max:255|unique:users,username',
-            'password' => 'required|string|min:8|confirmed',
-            'password_confirmation' => 'required|string|min:8|same:password',
-        ];
+        if (env('PARENT_SITE') == getDomain()) {
+            $valid = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email',
+                'username' => 'required|string|max:255|unique:users,username',
+                'password' => 'required|string|min:8|confirmed',
+                'password_confirmation' => 'required|string|min:8|same:password',
+            ]);
 
-        if (env('PARENT_SITE') != getDomain()) {
-            $rules['api_token'] = 'required|string';
-        }
-
-        $valid = Validator::make($request->all(), $rules);
-
-        if ($valid->fails()) {
-            return redirect()->back()->withErrors($valid)->withInput();
-        }
-
-        DB::beginTransaction();
-
-        try {
-            if (env('PARENT_SITE') == getDomain()) {
+            if ($valid->fails()) {
+                return redirect()->back()->withErrors($valid)->withInput();
+            } else {
                 $token = Str::random(80);
                 $newUser = User::create([
                     'name' => $request->name,
                     'username' => $request->username,
                     'email' => strtolower($request->email),
                     'password' => Hash::make($request->password),
-                    'balance' => '0',
-                    'type_balance' => 'default',
-                    'total_recharge' => '0',
-                    'total_deduct' => '0',
-                    'referral_money' => '0',
-                    'level' => '1',
+                    'balance' => 0,
+                    'lang' => 'vi',
+                    'total_recharge' => 0,
+                    'avatar' => 'https://ui-avatars.com/api/?background=random&name=' . $request->name,
+                    'total_deduct' => 0,
+                    'referral_money' => 0,
                     'position' => 'admin',
                     'api_token' => $token,
                     'domain' => getDomain(),
-                    'avatar' => 'https://ui-avatars.com/api/?background=random&name=' . $request->name,
-                    'lang' => 'vi',
                 ]);
 
-                SiteData::updateOrCreate(
-                    ['domain' => getDomain()],
-                    [
-                        'namesite' => getDomain(),
-                        'is_admin' => json_encode($newUser->only(['id', 'name', 'username', 'email', 'position', 'api_token', 'domain'])),
-                        'token_web' => $newUser->api_token,
-                        'username_web' => $newUser->username,
-                        'status' => 'Active',
-                        'domain' => getDomain(),
-                        'effect' => 'default_value'
-                    ]
-                );
+                if ($newUser) {
+
+                    $site = SiteData::where('domain', getDomain())->first();
+                    if (!$site) {
+                        SiteData::create([
+                            'namesite' => getDomain(),
+                            'is_admin' => json_encode($newUser->only(['id', 'name', 'username', 'email', 'position', 'api_token', 'domain'])),
+                            'token_web' => $newUser->api_token,
+                            'username_web' => $newUser->username,
+                            'status' => 'Active',
+                            'domain' => getDomain(),
+                        ]);
+                    } else {
+                        if ($site->status === 'Active') {
+                            return redirect()->back()->with('error', 'Anh cho phép em bug lại phát nữa');
+                        } else {
+                            $site->update([
+                                'is_admin' => json_encode($newUser->only(['id', 'name', 'username', 'email', 'position', 'api_token', 'domain'])),
+                                'token_web' => $newUser->api_token,
+                                'username_web' => $newUser->username,
+                                'status' => 'Active',
+                                'domain' => getDomain(),
+                            ]);
+                        }
+                    }
+
+                    return redirect()->route('login')->with('success', 'Đăng ký thành công')->withInput(['username' => $request->username]);
+                } else {
+                    return redirect()->back()->with('error', 'Đăng kí thất bại');
+                }
+            }
+        } else {
+            $valid = Validator::make($request->all(), [
+                'api_token' => 'required|string',
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email',
+                'username' => 'required|string|max:255|unique:users,username',
+                'password' => 'required|string|min:8|confirmed',
+                'password_confirmation' => 'required|string|min:8|same:password',
+            ]);
+
+            if ($valid->fails()) {
+                return redirect()->back()->withErrors($valid)->withInput();
             } else {
                 $userdomain = SiteCon::where('domain_name', getDomain())->first();
-                if (!$userdomain) {
-                    return redirect()->back()->with('error', 'Domain không hợp lệ');
-                }
+                $userParent = User::where('api_token', $request->api_token)->where('domain', $userdomain['domain'])->first();
+                if ($userParent) {
+                    $site = SiteData::where('domain', getDomain())->first();
+                    if ($site) {
+                        $site->update([
+                            'is_admin' => json_encode($userParent->only(['id', 'name', 'username', 'email', 'position', 'api_token', 'domain'])),
+                            'token_web' => $userParent->api_token,
+                            'username_web' => $userParent->username,
+                            'status' => 'Active',
+                            'domain' => getDomain(),
+                        ]);
+                    } else {
+                        SiteData::create([
+                            'namesite' => getDomain(),
+                            'is_admin' => json_encode($userParent->only(['id', 'name', 'username', 'email', 'position', 'api_token', 'domain'])),
+                            'token_web' => $userParent->api_token,
+                            'username_web' => $userParent->username,
+                            'status' => 'Active',
+                            'domain' => getDomain(),
+                        ]);
+                    }
+                    $token = encrypt($request->email . '|', $request->username . '|' . Str::random(32));
+                    $newUser = User::create([
+                        'name' => $request->name,
+                        'username' => $request->username,
+                        'email' => strtolower($request->email),
+                        'password' => Hash::make($request->password),
+                        'balance' => 0,
+                        'total_recharge' => 0,
+                        'avatar' => 'https://ui-avatars.com/api/?background=random&name=' . $request->name,
+                        'total_deduct' => 0,
+                        'referral_money' => 0,
+                        'position' => 'admin',
+                        'api_token' => $token,
+                        'domain' => getDomain(),
+                    ]);
 
-                $userParent = User::where('api_token', $request->api_token)
-                    ->where('domain', $userdomain['domain'])
-                    ->first();
-
-                if (!$userParent) {
+                    if ($newUser) {
+                        return redirect()->route('login')->with('success', 'Đăng ký thành công')->withInput(['username' => $request->username]);
+                    } else {
+                        return redirect()->back()->with('error', 'Đăng kí thất bại');
+                    }
+                } else {
                     return redirect()->back()->with('error', 'API Token không hợp lệ');
                 }
-
-                $token = encrypt($request->email . '|', $request->username . '|' . Str::random(32));
-                $newUser = User::create([
-                    'name' => $request->name,
-                    'username' => $request->username,
-                    'email' => strtolower($request->email),
-                    'password' => Hash::make($request->password),
-                    'balance' => '0',
-                    'type_balance' => 'default',
-                    'total_recharge' => '0',
-                    'total_deduct' => '0',
-                    'referral_money' => '0',
-                    'level' => '1',
-                    'position' => 'admin',
-                    'api_token' => $token,
-                    'domain' => getDomain(),
-                    'avatar' => 'https://ui-avatars.com/api/?background=random&name=' . $request->name,
-                    'lang' => 'vi',
-                ]);
-
-                SiteData::updateOrCreate(
-                    ['domain' => getDomain()],
-                    [
-                        'namesite' => getDomain(),
-                        'is_admin' => json_encode($userParent->only(['id', 'name', 'username', 'email', 'position', 'api_token', 'domain'])),
-                        'token_web' => $userParent->api_token,
-                        'username_web' => $userParent->username,
-                        'status' => 'Active',
-                        'domain' => getDomain(),
-                        'logo_mini' => $userParent->logo_mini ?: '/assets/images/logo.jpg',
-                    ]
-                );                
             }
-
-            DB::commit();
-            return redirect()->route('login')->with('success', 'Kích hoạt tài khoản thành công')->withInput(['username' => $request->username]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Đăng kí thất bại: ' . $e->getMessage());
         }
     }
 }
